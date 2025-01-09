@@ -1,5 +1,6 @@
 package main;
 
+import database.TableGenerator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -27,9 +28,15 @@ public class HelloController implements Initializable {
         text.setLayoutY(125);
         text.setTextAlignment(TextAlignment.CENTER);
         text.setFont(new Font("Arial", 32));
-        Button register=createButton(100,300,"Zarejestruj");
-        Button log=createButton(550,300,"Zaloguj");
-        mainPane.getChildren().addAll(text,register,log);
+        Button register=createButton(100,250,"Zarejestruj");
+        Button log=createButton(500,250,"Zaloguj");
+        Button init=createButton(300,450,"Zainicjuj bazę");
+        init.setOnAction(event -> {
+            TableGenerator.generateUserTable();
+            TableGenerator.createCardTable();
+            TableGenerator.createUsersCardsTable();
+        });
+        mainPane.getChildren().addAll(text,register,log,init);
 
     }
     private Button createButton(double width, double height, String text) {

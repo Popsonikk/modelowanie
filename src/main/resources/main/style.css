@@ -1,8 +1,8 @@
 .interfaceButton
 {
     -fx-background-color: #a2a8d3; /*kolor tła*/
-    -fx-font-size: 24px;  /*rozmiar czcionki*/
-    -fx-pref-width: 175px;
+    -fx-font-size: 20px;  /*rozmiar czcionki*/
+    -fx-pref-width: 200px;
     -fx-pref-height: 75px;   /*rozmiary przycisku*/
     -fx-text-fill: green;  /*kolor czcionki*/
     -fx-text-align: center;  /*wyrównanie czcionki*/
