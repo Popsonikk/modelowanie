@@ -22,17 +22,41 @@ import java.util.ResourceBundle;
 public class LoginController  implements Initializable {
     @FXML
     public Pane mainPane;
-    private MainController mainController;
+    private AdminController adminController;
+    private EmployeeController employeeController;
+    private ClientController clientController;
 
     private Stage mainStage;
-    private Scene mainScene;
+    private Scene adminScene;
+    private Scene employeeScene;
+    private Scene clientScene;
+
+    public void setEmployeeController(EmployeeController employeeController) {
+        this.employeeController = employeeController;
+    }
+
+    public void setClientController(ClientController clientController) {
+        this.clientController = clientController;
+    }
+
+    public void setEmployeeScene(Scene employeeScene) {
+        this.employeeScene = employeeScene;
+    }
+
+    public void setClientScene(Scene clientScene) {
+        this.clientScene = clientScene;
+    }
 
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
     }
 
-    public void setMainScene(Scene mainScene) {
-        this.mainScene = mainScene;
+    public void setAdminController(AdminController adminController) {
+        this.adminController = adminController;
+    }
+
+    public void setAdminScene(Scene adminScene) {
+        this.adminScene = adminScene;
     }
 
     @Override
@@ -81,9 +105,26 @@ public class LoginController  implements Initializable {
             else{
                 usernameField.clear();
                 passField.clear();
-                mainController.setLoggedUser(user);
                 message.setText("");
-                mainStage.setScene(mainScene);
+                switch (user.getRole())
+                {
+                    case 0:{
+                        clientController.setLoggedUser(user);
+                        mainStage.setScene(clientScene);
+                        break;
+                    }
+                    case 1:{
+                        employeeController.setLoggedUser(user);
+                        mainStage.setScene(employeeScene);
+                        break;
+                    }
+                    case 2:{
+                        adminController.setLoggedUser(user);
+                        mainStage.setScene(adminScene);
+                        break;
+                    }
+                }
+
             }
         });
 
@@ -108,7 +149,5 @@ public class LoginController  implements Initializable {
 
     }
 
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
-    }
+
 }

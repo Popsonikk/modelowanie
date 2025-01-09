@@ -20,17 +20,15 @@ public class MainController implements Initializable {
     private Stage mainStage;
     private Scene registerScene;
     private Scene loginScene;
-    private User loggedUser=null;
+
 
     @FXML
     public Pane mainPane;
-    private Text loggedUserName;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loggedUserName = new Text();
         Text text=new Text("Witaj w szablonie aplikacji sklepowej");
-
         text.setWrappingWidth(600);
         text.prefHeight(50);
         text.setLayoutX(100);
@@ -38,12 +36,6 @@ public class MainController implements Initializable {
         text.setTextAlignment(TextAlignment.CENTER);
         text.setFont(new Font("Arial", 32));
 
-        loggedUserName.setWrappingWidth(200);
-        loggedUserName.prefHeight(50);
-        loggedUserName.setLayoutX(300);
-        loggedUserName.setLayoutY(525);
-        loggedUserName.setTextAlignment(TextAlignment.CENTER);
-        loggedUserName.setFont(new Font("Arial", 24));
 
 
         Button register=createButton(100,250,"Zarejestruj");
@@ -58,7 +50,7 @@ public class MainController implements Initializable {
             mainStage.setScene(registerScene);
         });
         log.setOnAction(event -> {mainStage.setScene(loginScene);});
-        mainPane.getChildren().addAll(text,register,log,init,loggedUserName);
+        mainPane.getChildren().addAll(text,register,log,init);
 
     }
     private Button createButton(double width, double height, String text) {
@@ -82,12 +74,4 @@ public class MainController implements Initializable {
         this.loginScene = loginScene;
     }
 
-    public User getLoggedUser() {
-        return loggedUser;
-    }
-
-    public void setLoggedUser(User loggedUser) {
-        this.loggedUser = loggedUser;
-        loggedUserName.setText(loggedUser.getName());
-    }
 }
