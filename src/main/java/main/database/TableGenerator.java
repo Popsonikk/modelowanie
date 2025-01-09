@@ -10,8 +10,7 @@ public class TableGenerator {
         try (Connection conn = SQLiteConnector.connect();
              Statement statement = conn.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS users (" +
-                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "username TEXT NOT NULL, " +
+                    "username TEXT PRIMARY KEY NOT NULL, " +
                     "password TEXT NOT NULL, " +
                     "role INTEGER NOT NULL, " +
                     "cash INTEGER NOT NULL)";
@@ -40,7 +39,7 @@ public class TableGenerator {
              Statement statement = conn.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS usersCards (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    "userID INTEGER NOT NULL, " +
+                    "userID TEXT NOT NULL, " +
                     "cardID INTEGER NOT NULL, " +
                     "FOREIGN KEY (userID) REFERENCES users(id), " +
                     "FOREIGN KEY (cardID) REFERENCES cards(id))";

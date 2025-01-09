@@ -9,4 +9,6 @@ module main.controllers.modelowanie {
     opens main.controllers to javafx.fxml;
     exports main.database;
     opens main.database to javafx.fxml;
+    exports main.models;
+    opens main.models to javafx.fxml;
 }

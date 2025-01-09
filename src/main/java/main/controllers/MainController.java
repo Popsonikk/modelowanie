@@ -10,6 +10,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import main.models.User;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -18,12 +19,16 @@ public class MainController implements Initializable {
 
     private Stage mainStage;
     private Scene registerScene;
+    private Scene loginScene;
+    private User loggedUser=null;
 
     @FXML
     public Pane mainPane;
+    private Text loggedUserName;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        loggedUserName = new Text();
         Text text=new Text("Witaj w szablonie aplikacji sklepowej");
 
         text.setWrappingWidth(600);
@@ -32,9 +37,18 @@ public class MainController implements Initializable {
         text.setLayoutY(125);
         text.setTextAlignment(TextAlignment.CENTER);
         text.setFont(new Font("Arial", 32));
+
+        loggedUserName.setWrappingWidth(200);
+        loggedUserName.prefHeight(50);
+        loggedUserName.setLayoutX(300);
+        loggedUserName.setLayoutY(525);
+        loggedUserName.setTextAlignment(TextAlignment.CENTER);
+        loggedUserName.setFont(new Font("Arial", 24));
+
+
         Button register=createButton(100,250,"Zarejestruj");
         Button log=createButton(500,250,"Zaloguj");
-        Button init=createButton(300,450,"Zainicjuj bazę");
+        Button init=createButton(300,400,"Zainicjuj bazę");
         init.setOnAction(event -> {
             TableGenerator.generateUserTable();
             TableGenerator.createCardTable();
@@ -43,7 +57,8 @@ public class MainController implements Initializable {
         register.setOnAction(event -> {
             mainStage.setScene(registerScene);
         });
-        mainPane.getChildren().addAll(text,register,log,init);
+        log.setOnAction(event -> {mainStage.setScene(loginScene);});
+        mainPane.getChildren().addAll(text,register,log,init,loggedUserName);
 
     }
     private Button createButton(double width, double height, String text) {
@@ -61,5 +76,18 @@ public class MainController implements Initializable {
 
     public void setRegisterScene(Scene registerScene) {
         this.registerScene = registerScene;
+    }
+
+    public void setLoginScene(Scene loginScene) {
+        this.loginScene = loginScene;
+    }
+
+    public User getLoggedUser() {
+        return loggedUser;
+    }
+
+    public void setLoggedUser(User loggedUser) {
+        this.loggedUser = loggedUser;
+        loggedUserName.setText(loggedUser.getName());
     }
 }
