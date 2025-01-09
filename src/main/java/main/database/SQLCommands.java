@@ -36,6 +36,20 @@ public class SQLCommands {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }public static void addAccount(String nick, String password,int role) {
+        String sql="INSERT INTO users (username,password,role,cash) VALUES (?,?,?,?)";
+        try(Connection conn=SQLiteConnector.connect();
+            PreparedStatement statement=conn.prepareStatement(sql)) {
+            statement.setString(1, nick);
+            statement.setString(2, password);
+            statement.setInt(3,role);
+            statement.setInt(4,0);
+            statement.executeUpdate();
+            System.out.println("Account added");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
     public static User getAccount(String nick,String password) {
         String sql="SELECT * FROM users WHERE username= ? AND password= ?";

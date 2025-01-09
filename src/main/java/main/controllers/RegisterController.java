@@ -19,7 +19,7 @@ import main.database.SQLCommands;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class RegisterController implements Initializable {
+public class RegisterController extends RegisterItems implements Initializable {
 
     private boolean isNickValid = false;
     private boolean isPasswordValid = false;
@@ -28,25 +28,17 @@ public class RegisterController implements Initializable {
     @FXML
     public Pane mainPane;
 
-    private Stage mainStage;
-    private Scene mainScene;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Text text=new Text("Zarejestruj się");
-        text.setWrappingWidth(600);
-        text.prefHeight(50);
-        text.setLayoutX(100);
-        text.setLayoutY(75);
+        Text text=createText("Zarejestruj się",600,50,100,75,32);
         text.setFill(Paint.valueOf("#006400"));
-        text.setFont(new Font(32.0));
-        text.setTextAlignment(TextAlignment.CENTER);
         HBox usernameBox=createHBox(150,"Podaj nickname:");
         HBox passBox=createHBox(250,"Podaj hasło:");
         HBox appBox=createHBox(350,"Potwierdź hasło:");
 
-        Text nickMess=createText(230);
-        Text passMess=createText(330);
-        Text applyMess=createText(430);
+        Text nickMess=createText("",300,30,250,230,16);
+        Text passMess=createText("",300,30,250,330,16);
+        Text applyMess=createText("",300,30,250,430,16);
 
         TextField usernameField=new TextField();
         TextField passField=new PasswordField();
@@ -159,39 +151,11 @@ public class RegisterController implements Initializable {
         });
 
     }
-    private HBox createHBox(double y,String Text) {
-        HBox hBox=new HBox();
-        hBox.setLayoutX(100);
-        hBox.setLayoutY(y);
-        hBox.getStyleClass().add("registerBox");
-        Text text=new Text(Text);
-        text.setWrappingWidth(200);
-        text.setTextAlignment(TextAlignment.CENTER);
-        text.setFont(new Font(24));
-        hBox.getChildren().addAll(text);
-        return hBox;
-
-    }
-    private Text createText(double y)
-    {
-        Text text=new Text();
-        text.setTextAlignment(TextAlignment.CENTER);
-        text.setWrappingWidth(300);
-        text.setLayoutX(250);
-        text.setLayoutY(y);
-        text.prefHeight(30);
-        text.setFont(new Font(16));
-        return text;
-    }
 
 
-    public void setMainStage(Stage mainStage) {
-        this.mainStage = mainStage;
-    }
 
-    public void setMainScene(Scene mainScene) {
-        this.mainScene = mainScene;
-    }
+
+
 
 
 }

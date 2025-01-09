@@ -49,12 +49,15 @@ public class Main extends Application {
 
         adminController.setMainScene(mainScene);
         adminController.setMainStage(stage);
+        adminController.setSelfScene(adminScene);
 
         employeeController.setMainScene(mainScene);
         employeeController.setMainStage(stage);
+        employeeController.setSelfScene(employeeScene);
 
         clientController.setMainScene(mainScene);
         clientController.setMainStage(stage);
+        clientController.setSelfScene(clientScene);
 
 
         stage.setTitle("Modelowanie biznesowe");
