@@ -1,19 +1,23 @@
-package main;
+package main.controllers;
 
-import database.TableGenerator;
+import main.database.TableGenerator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class HelloController implements Initializable {
+public class MainController implements Initializable {
+
+    private Stage mainStage;
+    private Scene registerScene;
 
     @FXML
     public Pane mainPane;
@@ -36,6 +40,9 @@ public class HelloController implements Initializable {
             TableGenerator.createCardTable();
             TableGenerator.createUsersCardsTable();
         });
+        register.setOnAction(event -> {
+            mainStage.setScene(registerScene);
+        });
         mainPane.getChildren().addAll(text,register,log,init);
 
     }
@@ -46,5 +53,13 @@ public class HelloController implements Initializable {
         button.getStyleClass().add("interfaceButton");
         return button;
 
+    }
+
+    public void setMainStage(Stage mainStage) {
+        this.mainStage = mainStage;
+    }
+
+    public void setRegisterScene(Scene registerScene) {
+        this.registerScene = registerScene;
     }
 }

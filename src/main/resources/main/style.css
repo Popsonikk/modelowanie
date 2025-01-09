@@ -12,6 +12,25 @@
 .interfaceButton:hover { /*  efekt podświetlenia przy najechanie :hover*/
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 5, 0.5, 0, 0); /* Efekt cienia */
 }
+.registerBox{
+    -fx-border-color: #B8860B ;
+    -fx-background-color: beige;
+    -fx-spacing: 25px;
+    -fx-border-width: 3px;
+    -fx-pref-width: 600px;
+    -fx-pref-height: 50px;
+    -fx-padding: 5px;
+}
+.registerField{
+    -fx-pref-width: 400px;
+    -fx-pref-height: 75px;
+    -fx-text-alignment: center;
+    -fx-font-size: 20px;
+}
+.registerField:hover{
+    -fx-background-color: gray;
+}
+
 
 
 
