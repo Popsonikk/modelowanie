@@ -24,9 +24,9 @@ public abstract  class LoggedWindow extends RegisterItems {
     public Pane mainPane;
     private User loggedUser;
     private Text loggedUserName;
-    private Stage mainStage;
-    private Scene mainScene;
-    private Scene selfScene;
+    protected Stage mainStage;
+    protected Scene mainScene;
+    protected Scene selfScene;
 
     public void setSelfScene(Scene selfScene) {
         this.selfScene = selfScene;

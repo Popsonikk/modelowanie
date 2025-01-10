@@ -36,9 +36,9 @@ public class RegisterController extends RegisterItems implements Initializable {
         HBox passBox=createHBox(250,"Podaj hasło:");
         HBox appBox=createHBox(350,"Potwierdź hasło:");
 
-        Text nickMess=createText("",300,30,250,230,16);
-        Text passMess=createText("",300,30,250,330,16);
-        Text applyMess=createText("",300,30,250,430,16);
+        Text nickMess=createText("",300,30,250,242,16);
+        Text passMess=createText("",300,30,250,342,16);
+        Text applyMess=createText("",300,30,250,442,16);
 
         TextField usernameField=new TextField();
         TextField passField=new PasswordField();

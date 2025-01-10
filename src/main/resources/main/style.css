@@ -18,8 +18,8 @@
     -fx-spacing: 25px;
     -fx-border-width: 3px;
     -fx-pref-width: 600px;
-    -fx-pref-height: 50px;
-    -fx-padding: 5px;
+    -fx-pref-height: 75px;
+    -fx-alignment: center-left;
 }
 .registerField{
     -fx-pref-width: 400px;
@@ -30,6 +30,66 @@
 .registerField:hover{
     -fx-background-color: gray;
 }
+
+.orderField{
+    -fx-pref-width: 225px;
+    -fx-pref-height: 50px;
+    -fx-text-alignment: center;
+    -fx-font-size: 20px;
+}
+.orderField:hover{
+    -fx-background-color: gray;
+    -fx-border-width: 2px;
+    -fx-border-color: lightgreen;
+}
+
+.orderButton
+{
+    -fx-background-color: #a2a8d3; /*kolor tła*/
+    -fx-font-size: 20px;  /*rozmiar czcionki*/
+    -fx-pref-width: 125px;
+    -fx-pref-height: 50px;   /*rozmiary przycisku*/
+    -fx-text-fill: green;  /*kolor czcionki*/
+    -fx-text-align: center;  /*wyrównanie czcionki*/
+    -fx-border-color: #385170; /* kolor obwódki */
+    -fx-border-width: 3px; /*szerokosc obwódki*/
+}
+.orderButton:hover { /*  efekt podświetlenia przy najechanie :hover*/
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.75), 5, 0.5, 0, 0); /* Efekt cienia */
+    -fx-background-color: lightblue; /*kolor tła*/
+}
+.basketBorder{
+    -fx-border-color: #142d4c; /* kolor obwódki */
+    -fx-border-width: 1px 3px; /*szerokosc obwódki*/
+    -fx-padding: 5px;
+    -fx-spacing: 10px;
+    -fx-background-color: #e7eaf6;
+    -fx-pref-width: 790px;
+    -fx-pref-height: 25px;
+    -fx-alignment: center-left;
+
+}
+.deleteButton{
+    -fx-background-color: red;
+    -fx-border-width: 2px;
+    -fx-border-color: black;
+    -fx-pref-height: 20px;
+    -fx-pref-width: 35px;
+}
+.deleteButton:hover{
+    -fx-background-color: darkred;
+}
+.editButton{
+    -fx-background-color: lightgreen;
+    -fx-border-width: 2px;
+    -fx-border-color: beige;
+    -fx-pref-height: 20px;
+    -fx-pref-width: 35px;
+}
+.editButton:hover{
+    -fx-background-color: green;
+}
+
 
 
 
