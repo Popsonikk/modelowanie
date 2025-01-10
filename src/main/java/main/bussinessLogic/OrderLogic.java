@@ -40,7 +40,7 @@ public class OrderLogic {
     }
     public static List<Item> getOrder(String name)
     {
-        return SQLCommands.getOrder(name);
+         return SQLCommands.getOrder(name);
     }
 
 }
