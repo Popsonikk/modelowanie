@@ -12,11 +12,13 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import main.bussinessLogic.OrderLogic;
+import main.models.Item;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class AdminController extends LoggedWindow implements Initializable  {
     @Override
@@ -38,7 +40,7 @@ public class AdminController extends LoggedWindow implements Initializable  {
     }
     private Pane createOrderPane()
     {
-        List<String> orderedItems = new ArrayList<>();
+        AtomicReference<List<Item>> orderedItems = new AtomicReference<>(new ArrayList<>());
         ScrollPane scrollPane = createScrollPane();
         VBox vBox = new VBox();
         vBox.setPrefHeight(500);
@@ -56,23 +58,38 @@ public class AdminController extends LoggedWindow implements Initializable  {
         Button addToOrder=new Button("Dodaj ");
         addToOrder.getStyleClass().add("orderButton");
         addToOrder.setOnAction(event -> {
-            orderedItems.add(item.getText());
-            vBox.getChildren().add(createShowBox(item.getText(),orderedItems,vBox));
+            Item i=new Item(item.getText().split(",")[0].trim(),Integer.parseInt(item.getText().split(",")[1].trim()));
+            orderedItems.get().add(i);
+            vBox.getChildren().add(createShowBox(i, orderedItems.get(),vBox));
             item.clear();
 
         });
         Button save=new Button("Zapisz ");
         save.getStyleClass().add("orderButton");
+        save.setOnAction(event -> {
+            OrderLogic.saveOrder(orderedItems.get(),item.getText());
+            item.clear();
+        });
 
         Button load=new Button("Wczytaj ");
         load.getStyleClass().add("orderButton");
+        load.setOnAction(e -> {
+            orderedItems.get().clear();
+            vBox.getChildren().clear();
+            orderedItems.set(OrderLogic.getOrder(item.getText()));
+            for(Item i:orderedItems.get())
+            {
+                vBox.getChildren().add(createShowBox(i, orderedItems.get(),vBox));
+            }
+            item.clear();
+        });
 
         Button order=new Button("Wykonaj ");
         order.getStyleClass().add("orderButton");
         order.setOnAction(event -> {
-            OrderLogic.doOrder(orderedItems);
+            OrderLogic.doOrder(orderedItems.get());
             vBox.getChildren().clear();
-            orderedItems.clear();
+            orderedItems.get().clear();
             mainStage.setScene(selfScene);
         });
 
@@ -95,11 +112,10 @@ public class AdminController extends LoggedWindow implements Initializable  {
         scrollPane.setLayoutY(60);
         return scrollPane;
     }
-    private HBox createShowBox(String text, List<String> orderedItems, VBox vBox)
+    private HBox createShowBox(Item text, List<Item> orderedItems, VBox vBox)
     {
         HBox box=new HBox();
         box.getStyleClass().add("basketBorder");
-        String [] items=text.split(",");
         Button b=new Button("X");
         b.getStyleClass().add("deleteButton");
         b.setOnAction(event -> {
@@ -108,7 +124,7 @@ public class AdminController extends LoggedWindow implements Initializable  {
 
         });
 
-        box.getChildren().addAll(createColumnCeil(350,items[0].trim()),createColumnCeil(350,items[1].trim()),b);
+        box.getChildren().addAll(createColumnCeil(350,text.getName()),createColumnCeil(350,String.valueOf(text.getNumber())),b);
         return box;
     }
     private HBox createColumnCeil(double width, String text)
@@ -121,6 +137,8 @@ public class AdminController extends LoggedWindow implements Initializable  {
         box.getChildren().add(t);
         return box;
     }
+
+
 
 
 }

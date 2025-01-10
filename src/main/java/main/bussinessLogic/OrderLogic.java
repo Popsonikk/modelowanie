@@ -7,23 +7,40 @@ import java.util.List;
 
 public class OrderLogic {
 
-    public static void doOrder(List<String> items)
+    public static void doOrder(List<Item> items)
     {
-        for(String item : items)
+        for(Item item : items)
         {
-            String[] it=item.split(",");
-            Item sQLItem=SQLCommands.getItem(it[0].trim());
+            Item sQLItem=SQLCommands.getItem(item.getName());
             if(sQLItem!=null)
             {
-                int number=Integer.parseInt(it[1].trim())+ sQLItem.getNumber();
-                SQLCommands.updateItemNumber(it[0].trim(),number);
+                int number=item.getNumber()+ sQLItem.getNumber();
+                SQLCommands.updateItemNumber(item.getName(), number);
             }
             else
             {
-                SQLCommands.addItem(it[0].trim(), Integer.parseInt(it[1].trim()),0);
+                SQLCommands.addItem(item.getName(), item.getNumber(), 0);
             }
 
         }
+    }
+    public static void saveOrder(List<Item> items, String name)
+    {
+        if(SQLCommands.checkOrder(name))
+        {
+            System.out.println("Order already exists");
+        }
+        else
+        {
+            for(Item item : items)
+            {
+                SQLCommands.addOrderRow(name, item.getName(), item.getNumber());
+            }
+        }
+    }
+    public static List<Item> getOrder(String name)
+    {
+        return SQLCommands.getOrder(name);
     }
 
 }

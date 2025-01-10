@@ -10,6 +10,11 @@ public class Item {
         this.number = number;
         this.cash = cash;
     }
+    public Item(String name, int number) {
+        this.name = name;
+        this.number = number;
+        this.cash = 0;
+    }
 
     public String getName() {
         return name;

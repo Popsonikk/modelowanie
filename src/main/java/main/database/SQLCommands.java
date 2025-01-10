@@ -4,7 +4,9 @@ import main.models.Item;
 import main.models.User;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class SQLCommands {
 
@@ -131,6 +133,49 @@ public class SQLCommands {
             statement.executeUpdate();
             System.out.println("Item updated");
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static boolean checkOrder(String name)
+    {
+        String sql="SELECT * FROM orders WHERE name= ?";
+        try(Connection conn=SQLiteConnector.connect();
+            PreparedStatement statement= conn.prepareStatement(sql)) {
+            statement.setString(1, name);
+            ResultSet rs=statement.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void addOrderRow(String name,String item, int number)
+    {
+        String sql="INSERT INTO orders (name,itemName,number) VALUES (?,?,?)";
+        try(Connection conn=SQLiteConnector.connect();
+            PreparedStatement statement= conn.prepareStatement(sql)) {
+            statement.setString(1, name);
+            statement.setString(2, item);
+            statement.setInt(3, number);
+            statement.executeUpdate();
+            System.out.println("Order row added");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public static List<Item> getOrder(String name)
+    {
+        List<Item> list= new ArrayList<>();
+        String sql="SELECT * FROM orders WHERE name= ?";
+        try(Connection conn=SQLiteConnector.connect();
+            PreparedStatement statement= conn.prepareStatement(sql)) {
+            statement.setString(1, name);
+            ResultSet rs=statement.executeQuery();
+            while (rs.next())
+                list.add(new Item(rs.getString("ItemName"),rs.getInt("number"),0));
+            System.out.println("Order found");
+            return list;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
