@@ -1,5 +1,6 @@
 package main.database;
 
+import main.models.Item;
 import main.models.User;
 
 import java.sql.*;
@@ -75,5 +76,66 @@ public class SQLCommands {
             throw new RuntimeException(e);
         }
     }
+    public static void addItem(String name, int number, int cash)
+    {
+        String sql="INSERT INTO items (name,number,price) VALUES (?,?,?)";
+        try(Connection conn=SQLiteConnector.connect();
+        PreparedStatement statement= conn.prepareStatement(sql)) {
+            statement.setString(1, name);
+            statement.setInt(2, number);
+            statement.setInt(3, cash);
+            statement.executeUpdate();
+            System.out.println("Item added");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static Item getItem(String name)
+    {
+        String sql="SELECT * FROM items WHERE name= ?";
+        try(Connection conn=SQLiteConnector.connect();
+            PreparedStatement statement= conn.prepareStatement(sql)) {
+            statement.setString(1, name);
+            ResultSet rs=statement.executeQuery();
+            if (rs.next()){
+                System.out.println("Item found");
+                return new Item(rs.getString("name"),rs.getInt("number"),rs.getInt("price"));
+            }
+            else
+                return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void updateItemNumber(String name, int number)
+    {
+        String sql="UPDATE items SET number= ? WHERE name= ?";
+        try(Connection conn=SQLiteConnector.connect();
+            PreparedStatement statement= conn.prepareStatement(sql)) {
+            statement.setInt(1, number);
+            statement.setString(2, name);
+            statement.executeUpdate();
+            System.out.println("Item updated");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void updateItemCash(String name, int price)
+    {
+        String sql="UPDATE items SET price= ? WHERE name= ?";
+        try(Connection conn=SQLiteConnector.connect();
+            PreparedStatement statement= conn.prepareStatement(sql)) {
+            statement.setInt(1, price);
+            statement.setString(2, name);
+            statement.executeUpdate();
+            System.out.println("Item updated");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
 
 }

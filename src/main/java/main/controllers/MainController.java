@@ -45,6 +45,8 @@ public class MainController implements Initializable {
             TableGenerator.generateUserTable();
             TableGenerator.createCardTable();
             TableGenerator.createUsersCardsTable();
+            TableGenerator.createProductTable();
+            TableGenerator.createOrderTable();
         });
         register.setOnAction(event -> {
             mainStage.setScene(registerScene);

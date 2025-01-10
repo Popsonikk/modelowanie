@@ -49,4 +49,32 @@ public class TableGenerator {
             throw new RuntimeException(e);
         }
     }
+    public static void createProductTable() {
+        try (Connection conn = SQLiteConnector.connect();
+             Statement statement = conn.createStatement()) {
+            String sql = "CREATE TABLE IF NOT EXISTS items (" +
+                    "name TEXT PRIMARY KEY NOT NULL,"+
+                    "number INTEGER NOT NULL, " +
+                    "price INTEGER NOT NULL) ";
+            statement.executeUpdate(sql);
+            System.out.println("Table created");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static void createOrderTable() {
+        try (Connection conn = SQLiteConnector.connect();
+             Statement statement = conn.createStatement()) {
+            String sql = "CREATE TABLE IF NOT EXISTS orders (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "name TEXT NOT NULL, " +
+                    "itemName TEXT NOT NULL, " +
+                    "number INTEGER NOT NULL,"+
+                    "FOREIGN KEY (itemName) REFERENCES items(name)) ";
+            statement.executeUpdate(sql);
+            System.out.println("Table created");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

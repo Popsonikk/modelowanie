@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import main.bussinessLogic.OrderLogic;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -68,6 +69,13 @@ public class AdminController extends LoggedWindow implements Initializable  {
 
         Button order=new Button("Wykonaj ");
         order.getStyleClass().add("orderButton");
+        order.setOnAction(event -> {
+            OrderLogic.doOrder(orderedItems);
+            vBox.getChildren().clear();
+            orderedItems.clear();
+            mainStage.setScene(selfScene);
+        });
+
         HBox options=new HBox();
         options.setSpacing(10);
         options.getChildren().addAll(save,load,order);
@@ -97,9 +105,10 @@ public class AdminController extends LoggedWindow implements Initializable  {
         b.setOnAction(event -> {
             vBox.getChildren().remove(box);
             orderedItems.remove(text);
+
         });
 
-        box.getChildren().addAll(createColumnCeil(350,items[0]),createColumnCeil(350,items[1]),b);
+        box.getChildren().addAll(createColumnCeil(350,items[0].trim()),createColumnCeil(350,items[1].trim()),b);
         return box;
     }
     private HBox createColumnCeil(double width, String text)
