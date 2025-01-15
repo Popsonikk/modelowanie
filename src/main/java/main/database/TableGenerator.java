@@ -13,8 +13,8 @@ public class TableGenerator {
                     "username TEXT PRIMARY KEY NOT NULL, " +
                     "password TEXT NOT NULL, " +
                     "role INTEGER NOT NULL, " +
-                    "cash INTEGER NOT NULL)"+
-                    "cardID INTEGER , " +
+                    "cash FLOAT(24,2) NOT NULL, " +
+                    "cardID INTEGER, " +
                     "FOREIGN KEY (cardID) REFERENCES cards(id))";
             statement.executeUpdate(sql);
             System.out.println("Table created");
@@ -41,7 +41,7 @@ public class TableGenerator {
             String sql = "CREATE TABLE IF NOT EXISTS items (" +
                     "name TEXT PRIMARY KEY NOT NULL,"+
                     "number INTEGER NOT NULL, " +
-                    "price INTEGER NOT NULL) ";
+                    "price FLOAT(24,2) NOT NULL) ";
             statement.executeUpdate(sql);
             System.out.println("Table created");
         } catch (SQLException e) {

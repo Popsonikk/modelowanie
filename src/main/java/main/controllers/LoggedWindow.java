@@ -13,11 +13,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import main.database.SQLCommands;
 import main.models.User;
-
-import java.net.URL;
-import java.util.Objects;
 
 public abstract  class LoggedWindow extends RegisterItems {
     @FXML
@@ -71,72 +67,5 @@ public abstract  class LoggedWindow extends RegisterItems {
         this.loggedUser = loggedUser;
         loggedUserName.setText("Zalogowany jako: "+loggedUser.getName());
     }
-    protected Button createAccountButton()
-    {
-        Button button=new Button("Stwórz konto");
-        button.getStyleClass().add("interfaceButton");
-        button.setLayoutX(575);
-        button.setLayoutY(50);
-        Pane pane=createEmployeeRegisterPane();
-        Scene scene=new Scene(pane,800,600);
-        button.setOnAction(e -> {mainStage.setScene(scene); });
 
-        return button;
-    }
-    private Pane createEmployeeRegisterPane()
-    {
-        Pane pane=new Pane();
-        URL cssResource = getClass().getResource("/main/style.css");
-        pane.getStylesheets().add(cssResource.toExternalForm());
-        Text text=createText("Zarejestruj pracownika",600,50,100,75,32);
-        text.setFill(Paint.valueOf("#006400"));
-
-        HBox usernameBox=createHBox(175,"Podaj nickname:");
-        HBox passBox=createHBox(275,"Podaj hasło:");
-
-        TextField usernameField=new TextField();
-        TextField passField=new PasswordField();
-
-        usernameField.getStyleClass().add("registerField");
-        passField.getStyleClass().add("registerField");
-
-        usernameBox.getChildren().add(usernameField);
-        passBox.getChildren().add(passField);
-
-        Button loginButton=new Button("Stwórz konto");
-        loginButton.getStyleClass().add("interfaceButton");
-        loginButton.setLayoutY(500);
-        loginButton.setLayoutX(300);
-
-        ChoiceBox<String> choiceBox=new ChoiceBox<>();
-        choiceBox.getItems().addAll("------","Pracownik","Administrator");
-        choiceBox.getStyleClass().add("interfaceButton");
-        choiceBox.getSelectionModel().selectFirst();
-        choiceBox.setLayoutX(300);
-        choiceBox.setLayoutY(375);
-        pane.getChildren().addAll(text,usernameBox,passBox,choiceBox,loginButton);
-        loginButton.setOnAction(e -> {
-            int i;
-            if(choiceBox.getSelectionModel().getSelectedIndex()==1)
-                i=1;
-            else if(choiceBox.getSelectionModel().getSelectedIndex()==2)
-                i=2;
-            else
-            {
-                System.out.println("Wrong choice");
-                return;
-            }
-            if(usernameField.getText().isEmpty() || passField.getText().isEmpty())
-            {
-                System.out.println("blank fields");
-                return;
-            }
-            SQLCommands.addAccount(usernameField.getText(),passField.getText(),i);
-            usernameField.clear();
-            passField.clear();
-            choiceBox.getSelectionModel().selectFirst();
-            mainStage.setScene(selfScene);
-        });
-        return pane;
-    }
 }

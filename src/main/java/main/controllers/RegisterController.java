@@ -28,6 +28,17 @@ public class RegisterController extends RegisterItems implements Initializable {
     @FXML
     public Pane mainPane;
 
+    protected Stage mainStage;
+    protected Scene mainScene;
+
+    public void setMainStage(Stage mainStage) {
+        this.mainStage = mainStage;
+    }
+
+    public void setMainScene(Scene mainScene) {
+        this.mainScene = mainScene;
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Text text=createText("Zarejestruj się",600,50,100,75,32);

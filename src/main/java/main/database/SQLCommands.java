@@ -123,12 +123,12 @@ public class SQLCommands {
             throw new RuntimeException(e);
         }
     }
-    public static void updateItemCash(String name, int price)
+    public static void updateItemCash(String name, float price)
     {
         String sql="UPDATE items SET price= ? WHERE name= ?";
         try(Connection conn=SQLiteConnector.connect();
             PreparedStatement statement= conn.prepareStatement(sql)) {
-            statement.setInt(1, price);
+            statement.setFloat(1, price);
             statement.setString(2, name);
             statement.executeUpdate();
             System.out.println("Item updated");
@@ -188,7 +188,7 @@ public class SQLCommands {
             Statement statement= conn.createStatement()) {
             ResultSet rs=statement.executeQuery(sql);
             while (rs.next())
-                list.add(new Item(rs.getString("name"),rs.getInt("number"),rs.getInt("price")));
+                list.add(new Item(rs.getString("name"),rs.getInt("number"),rs.getFloat("price")));
             System.out.println("Order found");
             return list;
         } catch (SQLException e) {

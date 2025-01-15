@@ -46,5 +46,14 @@ public class OrderLogic {
     {
         return SQLCommands.getItems();
     }
+    public static void updateItemNumber(String i,int number)
+    {
+        SQLCommands.updateItemNumber(i,number);
+    }
+    public static void updateItemPrice(String i,float number)
+    {
+        SQLCommands.updateItemCash(i,number);
+    }
+
 
 }

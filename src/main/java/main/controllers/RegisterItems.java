@@ -7,9 +7,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-public abstract class RegisterItems {
-    protected Stage mainStage;
-    protected Scene mainScene;
+public class RegisterItems {
+
     protected HBox createHBox(double y, String Text) {
         HBox hBox=new HBox();
         hBox.setLayoutX(100);
@@ -23,13 +22,7 @@ public abstract class RegisterItems {
         return hBox;
 
     }
-    public void setMainStage(Stage mainStage) {
-        this.mainStage = mainStage;
-    }
 
-    public void setMainScene(Scene mainScene) {
-        this.mainScene = mainScene;
-    }
     protected Text createText(String text,double width,double height,double x,double y,double font) {
         Text message=new Text(text);
         message.setTextAlignment(TextAlignment.CENTER);

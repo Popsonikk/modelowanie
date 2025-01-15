@@ -50,6 +50,8 @@ public class Main extends Application {
         adminController.setMainScene(mainScene);
         adminController.setMainStage(stage);
         adminController.setSelfScene(adminScene);
+        adminController.setUpControllers(stage,adminScene);
+        adminController.startInit();
 
         employeeController.setMainScene(mainScene);
         employeeController.setMainStage(stage);

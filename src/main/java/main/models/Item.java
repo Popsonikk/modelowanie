@@ -3,9 +3,9 @@ package main.models;
 public class Item {
     private String name;
     private int number;
-    private int cash;
+    private float cash;
 
-    public Item(String name, int number, int cash) {
+    public Item(String name, int number, float cash) {
         this.name = name;
         this.number = number;
         this.cash = cash;
@@ -24,11 +24,11 @@ public class Item {
         this.name = name;
     }
 
-    public int getCash() {
+    public float getCash() {
         return cash;
     }
 
-    public void setCash(int cash) {
+    public void setCash(float cash) {
         this.cash = cash;
     }
 

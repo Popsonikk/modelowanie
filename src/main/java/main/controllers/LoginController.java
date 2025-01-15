@@ -30,6 +30,17 @@ public class LoginController extends RegisterItems implements Initializable {
     private Scene employeeScene;
     private Scene clientScene;
 
+    protected Stage mainStage;
+    protected Scene mainScene;
+
+    public void setMainStage(Stage mainStage) {
+        this.mainStage = mainStage;
+    }
+
+    public void setMainScene(Scene mainScene) {
+        this.mainScene = mainScene;
+    }
+
     public void setEmployeeController(EmployeeController employeeController) {
         this.employeeController = employeeController;
     }
