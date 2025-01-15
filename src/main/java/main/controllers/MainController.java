@@ -44,7 +44,6 @@ public class MainController implements Initializable {
         init.setOnAction(event -> {
             TableGenerator.generateUserTable();
             TableGenerator.createCardTable();
-            TableGenerator.createUsersCardsTable();
             TableGenerator.createProductTable();
             TableGenerator.createOrderTable();
         });

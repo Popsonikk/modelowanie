@@ -24,7 +24,7 @@ public class AdminController extends LoggedWindow implements Initializable  {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         init();
-        mainPane.getChildren().addAll(createAccountButton(),createOrderButton());
+        mainPane.getChildren().addAll(createAccountButton(),createOrderButton(),createStorageButton());
 
     }
     private Button createOrderButton()
@@ -136,6 +136,57 @@ public class AdminController extends LoggedWindow implements Initializable  {
         t.setFill(Paint.valueOf("#006400"));
         box.getChildren().add(t);
         return box;
+    }
+    private Button createStorageButton()
+    {
+        Button orderButton = new Button("Zobacz magazyn");
+        orderButton.getStyleClass().add("interfaceButton");
+        orderButton.setLayoutX(300);
+        orderButton.setLayoutY(250);
+        Scene scene=new Scene(createStoragePane(),800,600);
+        orderButton.setOnAction(event -> {mainStage.setScene(scene);});
+        return orderButton;
+    }
+    private Pane createStoragePane()
+    {
+        List<Item> orderedItems = OrderLogic.getItems();
+        ScrollPane scrollPane = createScrollPane();
+        VBox vBox = new VBox();
+        vBox.setPrefHeight(500);
+        vBox.setPrefWidth(780);
+        scrollPane.setContent(vBox);
+        Pane pane=new Pane();
+        URL cssResource = getClass().getResource("/main/style.css");
+        pane.getStylesheets().add(cssResource.toExternalForm());
+        Button back=new Button("Powrót");
+        back.getStyleClass().add("orderButton");
+        back.setLayoutX(300);
+        back.setLayoutY(5);
+        back.setOnAction(event -> {mainStage.setScene(selfScene);});
+
+        pane.getChildren().addAll(scrollPane,back);
+        createView(orderedItems,vBox);
+        return pane;
+    }
+    private void createView(List<Item> orderedItems,VBox vBox)
+    {
+        HBox b=new HBox();
+        b.getStyleClass().add("basketBorder");
+        b.getChildren().addAll(createColumnCeil(300,"Przedmiot"),
+                createColumnCeil(200,"Ilość"),
+                createColumnCeil(200,"Cena"));
+        vBox.getChildren().addAll(b);
+
+        for (Item i : orderedItems)
+        {
+            HBox box=new HBox();
+            box.getStyleClass().add("basketBorder");
+            box.getChildren().addAll(createColumnCeil(300,i.getName()),
+                    createColumnCeil(200,String.valueOf(i.getNumber())),
+                    createColumnCeil(200,String.valueOf(i.getCash())));
+            vBox.getChildren().addAll(box);
+
+        }
     }
 
 

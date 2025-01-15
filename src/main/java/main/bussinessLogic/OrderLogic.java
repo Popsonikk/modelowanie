@@ -42,5 +42,9 @@ public class OrderLogic {
     {
          return SQLCommands.getOrder(name);
     }
+    public static List<Item> getItems()
+    {
+        return SQLCommands.getItems();
+    }
 
 }

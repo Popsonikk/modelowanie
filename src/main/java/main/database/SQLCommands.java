@@ -180,6 +180,22 @@ public class SQLCommands {
             throw new RuntimeException(e);
         }
     }
+    public static List<Item> getItems()
+    {
+        List<Item> list= new ArrayList<>();
+        String sql="SELECT * FROM items";
+        try(Connection conn=SQLiteConnector.connect();
+            Statement statement= conn.createStatement()) {
+            ResultSet rs=statement.executeQuery(sql);
+            while (rs.next())
+                list.add(new Item(rs.getString("name"),rs.getInt("number"),rs.getInt("price")));
+            System.out.println("Order found");
+            return list;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 
 
