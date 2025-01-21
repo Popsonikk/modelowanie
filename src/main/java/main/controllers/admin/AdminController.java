@@ -1,13 +1,13 @@
-package main.controllers;
-import javafx.fxml.Initializable;
+package main.controllers.admin;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-import main.bussinessLogic.OrderLogic;
-import java.net.URL;
-import java.util.ResourceBundle;
+import main.bussinessLogic.AdminLogic;
+import main.controllers.LoggedWindow;
+import main.database.SQLCommands;
+import main.database.SQLiteConnector;
 
-public class AdminController extends LoggedWindow   {
+public class AdminController extends LoggedWindow {
 
     private AdminStorageController adminStorageController;
     private AdminRegisterController adminRegisterController;
@@ -55,7 +55,8 @@ public class AdminController extends LoggedWindow   {
         orderButton.setLayoutY(250);
         Scene scene=new Scene(adminStorageController.createScenePane(),800,600);
         orderButton.setOnAction(event -> {
-            adminStorageController.setStorageItems(OrderLogic.getItems());
+            AdminLogic logic=new AdminLogic(new SQLCommands(new SQLiteConnector()));
+            adminStorageController.setStorageItems(logic.getItems());
             adminStorageController.createView();
             mainStage.setScene(scene);
 

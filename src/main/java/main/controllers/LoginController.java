@@ -9,11 +9,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import main.bussinessLogic.UserLogic;
+import main.controllers.admin.AdminController;
 import main.database.SQLCommands;
+import main.database.SQLiteConnector;
 import main.models.User;
 
 import java.net.URL;
@@ -89,7 +90,8 @@ public class LoginController extends RegisterItems implements Initializable {
         Text message=createText("",300,30,250,450,16);
 
         loginButton.setOnAction(e->{
-            User user=SQLCommands.getAccount(usernameField.getText(),passField.getText());
+            UserLogic logic=new UserLogic(new SQLCommands(new SQLiteConnector()));
+            User user=logic.getAccount(usernameField.getText(),passField.getText());
             if(user==null){
                 message.setText("Błędne dane");
                 usernameField.clear();

@@ -1,5 +1,7 @@
 package main.controllers;
 
+import main.bussinessLogic.InitBaseLogic;
+import main.database.SQLiteConnector;
 import main.database.TableGenerator;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -42,10 +44,11 @@ public class MainController implements Initializable {
         Button log=createButton(500,250,"Zaloguj");
         Button init=createButton(300,400,"Zainicjuj bazę");
         init.setOnAction(event -> {
-            TableGenerator.generateUserTable();
-            TableGenerator.createCardTable();
-            TableGenerator.createProductTable();
-            TableGenerator.createOrderTable();
+            InitBaseLogic logic=new InitBaseLogic(new TableGenerator(new SQLiteConnector()));
+            logic.getTableGenerator().generateUserTable();
+            logic.getTableGenerator().createCardTable();
+            logic.getTableGenerator().createProductTable();
+            logic.getTableGenerator().createOrderTable();
         });
         register.setOnAction(event -> {
             mainStage.setScene(registerScene);

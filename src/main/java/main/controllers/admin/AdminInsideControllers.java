@@ -1,6 +1,5 @@
-package main.controllers;
+package main.controllers.admin;
 
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
@@ -9,7 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import main.controllers.RegisterItems;
 import main.models.Item;
 
 import java.net.URL;

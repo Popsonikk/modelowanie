@@ -1,4 +1,4 @@
-package main.controllers;
+package main.controllers.admin;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -10,11 +10,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import main.bussinessLogic.AdminLogic;
+import main.bussinessLogic.UserLogic;
 import main.database.SQLCommands;
+import main.database.SQLiteConnector;
 
-import java.net.URL;
-
-public class AdminRegisterController extends AdminInsideControllers{
+public class AdminRegisterController extends AdminInsideControllers {
     protected Stage mainStage;
     protected Scene selfScene;
 
@@ -72,7 +73,8 @@ public class AdminRegisterController extends AdminInsideControllers{
                 System.out.println("blank fields");
                 return;
             }
-            SQLCommands.addAccount(usernameField.getText(),passField.getText(),i);
+            UserLogic logic=new UserLogic(new SQLCommands(new SQLiteConnector()));
+            logic.addAccount(usernameField.getText(),passField.getText(),i);
             usernameField.clear();
             passField.clear();
             choiceBox.getSelectionModel().selectFirst();

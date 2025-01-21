@@ -9,10 +9,15 @@ import java.util.Collection;
 import java.util.List;
 
 public class SQLCommands {
+    SQLiteConnector connector;
 
-    public static boolean accountExists(){
+    public SQLCommands(SQLiteConnector connector) {
+        this.connector = connector;
+    }
+
+    public  boolean accountExists(){
         String sql="SELECT * FROM USERS";
-        try(Connection conn=SQLiteConnector.connect();
+        try(Connection conn=connector.connect();
             Statement statement= conn.createStatement()){
             ResultSet rs=statement.executeQuery(sql);
             return rs.next();
@@ -22,13 +27,14 @@ public class SQLCommands {
         }
     }
 
-    public static void addAccount(String nick, String password) {
+    public  void addAccount(String nick, String password) {
         String sql="INSERT INTO users (username,password,role,cash) VALUES (?,?,?,?)";
-        try(Connection conn=SQLiteConnector.connect();
+        SQLCommands commands = new SQLCommands(connector);
+        try(Connection conn=connector.connect();
             PreparedStatement statement=conn.prepareStatement(sql)) {
             statement.setString(1, nick);
             statement.setString(2, password);
-            if(SQLCommands.accountExists())
+            if(commands.accountExists())
                 statement.setInt(3,0);
             else
                 statement.setInt(3,2);
@@ -39,9 +45,9 @@ public class SQLCommands {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }public static void addAccount(String nick, String password,int role) {
+    }public  void addAccount(String nick, String password,int role) {
         String sql="INSERT INTO users (username,password,role,cash) VALUES (?,?,?,?)";
-        try(Connection conn=SQLiteConnector.connect();
+        try(Connection conn=connector.connect();
             PreparedStatement statement=conn.prepareStatement(sql)) {
             statement.setString(1, nick);
             statement.setString(2, password);
@@ -54,9 +60,9 @@ public class SQLCommands {
             throw new RuntimeException(e);
         }
     }
-    public static User getAccount(String nick,String password) {
+    public  User getAccount(String nick,String password) {
         String sql="SELECT * FROM users WHERE username= ? AND password= ?";
-        try(Connection conn=SQLiteConnector.connect();
+        try(Connection conn=connector.connect();
             PreparedStatement statement=conn.prepareStatement(sql)) {
             statement.setString(1, nick);
             statement.setString(2, password);
@@ -78,10 +84,10 @@ public class SQLCommands {
             throw new RuntimeException(e);
         }
     }
-    public static void addItem(String name, int number, int cash)
+    public  void addItem(String name, int number, int cash)
     {
         String sql="INSERT INTO items (name,number,price) VALUES (?,?,?)";
-        try(Connection conn=SQLiteConnector.connect();
+        try(Connection conn=connector.connect();
         PreparedStatement statement= conn.prepareStatement(sql)) {
             statement.setString(1, name);
             statement.setInt(2, number);
@@ -92,10 +98,10 @@ public class SQLCommands {
             throw new RuntimeException(e);
         }
     }
-    public static Item getItem(String name)
+    public  Item getItem(String name)
     {
         String sql="SELECT * FROM items WHERE name= ?";
-        try(Connection conn=SQLiteConnector.connect();
+        try(Connection conn=connector.connect();
             PreparedStatement statement= conn.prepareStatement(sql)) {
             statement.setString(1, name);
             ResultSet rs=statement.executeQuery();
@@ -109,10 +115,10 @@ public class SQLCommands {
             throw new RuntimeException(e);
         }
     }
-    public static void updateItemNumber(String name, int number)
+    public  void updateItemNumber(String name, int number)
     {
         String sql="UPDATE items SET number= ? WHERE name= ?";
-        try(Connection conn=SQLiteConnector.connect();
+        try(Connection conn=connector.connect();
             PreparedStatement statement= conn.prepareStatement(sql)) {
             statement.setInt(1, number);
             statement.setString(2, name);
@@ -123,10 +129,10 @@ public class SQLCommands {
             throw new RuntimeException(e);
         }
     }
-    public static void updateItemCash(String name, float price)
+    public  void updateItemCash(String name, float price)
     {
         String sql="UPDATE items SET price= ? WHERE name= ?";
-        try(Connection conn=SQLiteConnector.connect();
+        try(Connection conn= connector.connect();
             PreparedStatement statement= conn.prepareStatement(sql)) {
             statement.setFloat(1, price);
             statement.setString(2, name);
@@ -137,10 +143,10 @@ public class SQLCommands {
             throw new RuntimeException(e);
         }
     }
-    public static boolean checkOrder(String name)
+    public  boolean checkOrder(String name)
     {
         String sql="SELECT * FROM orders WHERE name= ?";
-        try(Connection conn=SQLiteConnector.connect();
+        try(Connection conn=connector.connect();
             PreparedStatement statement= conn.prepareStatement(sql)) {
             statement.setString(1, name);
             ResultSet rs=statement.executeQuery();
@@ -149,10 +155,10 @@ public class SQLCommands {
             throw new RuntimeException(e);
         }
     }
-    public static void addOrderRow(String name,String item, int number)
+    public  void addOrderRow(String name,String item, int number)
     {
         String sql="INSERT INTO orders (name,itemName,number) VALUES (?,?,?)";
-        try(Connection conn=SQLiteConnector.connect();
+        try(Connection conn=connector.connect();
             PreparedStatement statement= conn.prepareStatement(sql)) {
             statement.setString(1, name);
             statement.setString(2, item);
@@ -164,11 +170,11 @@ public class SQLCommands {
         }
 
     }
-    public static List<Item> getOrder(String name)
+    public  List<Item> getOrder(String name)
     {
         List<Item> list= new ArrayList<>();
         String sql="SELECT * FROM orders WHERE name= ?";
-        try(Connection conn=SQLiteConnector.connect();
+        try(Connection conn=connector.connect();
             PreparedStatement statement= conn.prepareStatement(sql)) {
             statement.setString(1, name);
             ResultSet rs=statement.executeQuery();
@@ -180,11 +186,11 @@ public class SQLCommands {
             throw new RuntimeException(e);
         }
     }
-    public static List<Item> getItems()
+    public  List<Item> getItems()
     {
         List<Item> list= new ArrayList<>();
         String sql="SELECT * FROM items";
-        try(Connection conn=SQLiteConnector.connect();
+        try(Connection conn=connector.connect();
             Statement statement= conn.createStatement()) {
             ResultSet rs=statement.executeQuery(sql);
             while (rs.next())

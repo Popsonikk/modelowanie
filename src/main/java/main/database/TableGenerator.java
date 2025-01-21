@@ -5,15 +5,19 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class TableGenerator {
+    SQLiteConnector connector;
+    public TableGenerator(SQLiteConnector connector) {
+        this.connector = connector;
+    }
 
-    public static void generateUserTable() {
-        try (Connection conn = SQLiteConnector.connect();
+    public  void generateUserTable() {
+        try (Connection conn = connector.connect();
              Statement statement = conn.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS users (" +
                     "username TEXT PRIMARY KEY NOT NULL, " +
                     "password TEXT NOT NULL, " +
                     "role INTEGER NOT NULL, " +
-                    "cash FLOAT(24,2) NOT NULL, " +
+                    "cash FLOAT(2) NOT NULL, " +
                     "cardID INTEGER, " +
                     "FOREIGN KEY (cardID) REFERENCES cards(id))";
             statement.executeUpdate(sql);
@@ -23,8 +27,8 @@ public class TableGenerator {
         }
     }
 
-    public static void createCardTable() {
-        try (Connection conn = SQLiteConnector.connect();
+    public  void createCardTable() {
+        try (Connection conn = connector.connect();
              Statement statement = conn.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS cards (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -35,21 +39,21 @@ public class TableGenerator {
             throw new RuntimeException(e);
         }
     }
-    public static void createProductTable() {
-        try (Connection conn = SQLiteConnector.connect();
+    public  void createProductTable() {
+        try (Connection conn = connector.connect();
              Statement statement = conn.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS items (" +
                     "name TEXT PRIMARY KEY NOT NULL,"+
                     "number INTEGER NOT NULL, " +
-                    "price FLOAT(24,2) NOT NULL) ";
+                    "price FLOAT(2) NOT NULL) ";
             statement.executeUpdate(sql);
             System.out.println("Table created");
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
-    public static void createOrderTable() {
-        try (Connection conn = SQLiteConnector.connect();
+    public  void createOrderTable() {
+        try (Connection conn = connector.connect();
              Statement statement = conn.createStatement()) {
             String sql = "CREATE TABLE IF NOT EXISTS orders (" +
                     "id INTEGER PRIMARY KEY AUTOINCREMENT, " +

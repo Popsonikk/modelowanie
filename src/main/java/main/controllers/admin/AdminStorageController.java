@@ -1,4 +1,4 @@
-package main.controllers;
+package main.controllers.admin;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -8,13 +8,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import main.bussinessLogic.OrderLogic;
+import main.bussinessLogic.AdminLogic;
 import main.database.SQLCommands;
+import main.database.SQLiteConnector;
 import main.models.Item;
 
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 
 public class AdminStorageController extends AdminInsideControllers {
 
@@ -73,7 +72,8 @@ public class AdminStorageController extends AdminInsideControllers {
                 if(dialog.getResult() != null)
                 {
                     int number = Integer.parseInt(dialog.getResult());
-                    OrderLogic.updateItemNumber(i.getName(),number);
+                    AdminLogic logic=new AdminLogic(new SQLCommands(new SQLiteConnector()));
+                    logic.updateItemNumber(i.getName(),number);
                     i.setNumber(number);
                     vBox.getChildren().clear();
                     createView();
@@ -89,7 +89,8 @@ public class AdminStorageController extends AdminInsideControllers {
                 if(dialog.getResult() != null)
                 {
                     float price = Float.parseFloat(dialog.getResult());
-                    OrderLogic.updateItemPrice(i.getName(),price);
+                    AdminLogic logic=new AdminLogic(new SQLCommands(new SQLiteConnector()));
+                    logic.updateItemPrice(i.getName(),price);
                     i.setCash(price);
                     vBox.getChildren().clear();
                     createView();

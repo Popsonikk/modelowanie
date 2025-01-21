@@ -13,7 +13,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import main.bussinessLogic.UserLogic;
 import main.database.SQLCommands;
+import main.database.SQLiteConnector;
 
 
 import java.net.URL;
@@ -151,7 +153,8 @@ public class RegisterController extends RegisterItems implements Initializable {
             }
         });
         registerButton.setOnAction(event -> {
-            SQLCommands.addAccount(usernameField.getText(),passField.getText());
+            UserLogic logic=new UserLogic(new SQLCommands(new SQLiteConnector()));
+            logic.addAccount(usernameField.getText(),passField.getText());
             usernameField.clear();
             passField.clear();
             appField.clear();

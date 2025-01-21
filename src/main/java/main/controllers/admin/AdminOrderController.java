@@ -1,4 +1,4 @@
-package main.controllers;
+package main.controllers.admin;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -8,17 +8,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import main.bussinessLogic.OrderLogic;
+import main.bussinessLogic.AdminLogic;
+import main.database.SQLCommands;
+import main.database.SQLiteConnector;
 import main.models.Item;
 import java.util.ArrayList;
-import java.util.List;
 
 
-public class AdminOrderController extends AdminInsideControllers{
+public class AdminOrderController extends AdminInsideControllers {
 
     protected Stage mainStage;
     protected Scene selfScene;
-
 
     public void setSelfScene(Scene selfScene) {
         this.selfScene = selfScene;
@@ -55,7 +55,8 @@ public class AdminOrderController extends AdminInsideControllers{
         Button save=new Button("Zapisz ");
         save.getStyleClass().add("orderButton");
         save.setOnAction(event -> {
-            OrderLogic.saveOrder(items,item.getText());
+            AdminLogic logic=new AdminLogic(new SQLCommands(new SQLiteConnector()));
+            logic.saveOrder(items,item.getText());
             item.clear();
         });
 
@@ -64,7 +65,8 @@ public class AdminOrderController extends AdminInsideControllers{
         load.setOnAction(e -> {
             items.clear();
             vBox.getChildren().clear();
-            items=new ArrayList<>(OrderLogic.getOrder(item.getText()));
+            AdminLogic logic=new AdminLogic(new SQLCommands(new SQLiteConnector()));
+            items=new ArrayList<>(logic.getOrder(item.getText()));
             for(Item i:items)
             {
                 vBox.getChildren().add(createShowBox(i));
@@ -75,7 +77,8 @@ public class AdminOrderController extends AdminInsideControllers{
         Button order=new Button("Wykonaj ");
         order.getStyleClass().add("orderButton");
         order.setOnAction(event -> {
-            OrderLogic.doOrder(items);
+            AdminLogic logic=new AdminLogic(new SQLCommands(new SQLiteConnector()));
+            logic.doOrder(items);
             vBox.getChildren().clear();
             items.clear();
             mainStage.setScene(selfScene);

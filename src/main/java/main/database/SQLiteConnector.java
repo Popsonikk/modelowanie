@@ -4,7 +4,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class SQLiteConnector {
-    public static Connection connect()
+    public  Connection connect()
     {
         Connection conn = null;
         try {
