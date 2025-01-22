@@ -3,12 +3,7 @@ package main.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -18,8 +13,8 @@ import main.models.User;
 public abstract  class LoggedWindow extends RegisterItems {
     @FXML
     public Pane mainPane;
-    private User loggedUser;
-    private Text loggedUserName;
+    protected User loggedUser;
+    protected Text loggedUserName;
     protected Stage mainStage;
     protected Scene mainScene;
     protected Scene selfScene;
@@ -66,6 +61,14 @@ public abstract  class LoggedWindow extends RegisterItems {
     public void setLoggedUser(User loggedUser) {
         this.loggedUser = loggedUser;
         loggedUserName.setText("Zalogowany jako: "+loggedUser.getName());
+    }
+    protected Button createButton(String text, double x, double y)
+    {
+        Button button=new Button(text);
+        button.getStyleClass().add("interfaceButton");
+        button.setLayoutX(x);
+        button.setLayoutY(y);
+        return button;
     }
 
 }

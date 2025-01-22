@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import main.controllers.*;
 import main.controllers.admin.AdminController;
+import main.controllers.client.ClientController;
 
 import java.io.IOException;
 

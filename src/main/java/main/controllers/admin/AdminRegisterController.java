@@ -18,12 +18,9 @@ import main.database.SQLiteConnector;
 public class AdminRegisterController extends AdminInsideControllers {
     protected Stage mainStage;
     protected Scene selfScene;
-
-
     public void setSelfScene(Scene selfScene) {
         this.selfScene = selfScene;
     }
-
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
     }
@@ -32,24 +29,18 @@ public class AdminRegisterController extends AdminInsideControllers {
         Pane pane=getPane();
         Text text=createText("Zarejestruj pracownika",600,50,100,75,32);
         text.setFill(Paint.valueOf("#006400"));
-
         HBox usernameBox=createHBox(175,"Podaj nickname:");
         HBox passBox=createHBox(275,"Podaj hasło:");
-
         TextField usernameField=new TextField();
         TextField passField=new PasswordField();
-
         usernameField.getStyleClass().add("registerField");
         passField.getStyleClass().add("registerField");
-
         usernameBox.getChildren().add(usernameField);
         passBox.getChildren().add(passField);
-
         Button loginButton=new Button("Stwórz konto");
         loginButton.getStyleClass().add("interfaceButton");
         loginButton.setLayoutY(500);
         loginButton.setLayoutX(300);
-
         ChoiceBox<String> choiceBox=new ChoiceBox<>();
         choiceBox.getItems().addAll("------","Pracownik","Administrator");
         choiceBox.getStyleClass().add("interfaceButton");
@@ -68,8 +59,7 @@ public class AdminRegisterController extends AdminInsideControllers {
                 System.out.println("Wrong choice");
                 return;
             }
-            if(usernameField.getText().isEmpty() || passField.getText().isEmpty())
-            {
+            if(usernameField.getText().isEmpty() || passField.getText().isEmpty()) {
                 System.out.println("blank fields");
                 return;
             }
@@ -82,6 +72,4 @@ public class AdminRegisterController extends AdminInsideControllers {
         });
         return pane;
     }
-
-
 }

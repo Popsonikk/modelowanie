@@ -13,6 +13,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import main.bussinessLogic.UserLogic;
 import main.controllers.admin.AdminController;
+import main.controllers.client.ClientController;
 import main.database.SQLCommands;
 import main.database.SQLiteConnector;
 import main.models.User;

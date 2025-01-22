@@ -16,7 +16,6 @@ import java.util.List;
 
 public abstract class AdminInsideControllers extends RegisterItems {
 
-
     protected List<Item> items;
     protected VBox vBox;
     protected ScrollPane createScrollPane()

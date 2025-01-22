@@ -19,11 +19,9 @@ public class AdminOrderController extends AdminInsideControllers {
 
     protected Stage mainStage;
     protected Scene selfScene;
-
     public void setSelfScene(Scene selfScene) {
         this.selfScene = selfScene;
     }
-
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
     }
@@ -59,7 +57,6 @@ public class AdminOrderController extends AdminInsideControllers {
             logic.saveOrder(items,item.getText());
             item.clear();
         });
-
         Button load=new Button("Wczytaj ");
         load.getStyleClass().add("orderButton");
         load.setOnAction(e -> {
@@ -68,12 +65,9 @@ public class AdminOrderController extends AdminInsideControllers {
             AdminLogic logic=new AdminLogic(new SQLCommands(new SQLiteConnector()));
             items=new ArrayList<>(logic.getOrder(item.getText()));
             for(Item i:items)
-            {
                 vBox.getChildren().add(createShowBox(i));
-            }
             item.clear();
         });
-
         Button order=new Button("Wykonaj ");
         order.getStyleClass().add("orderButton");
         order.setOnAction(event -> {
@@ -83,7 +77,6 @@ public class AdminOrderController extends AdminInsideControllers {
             items.clear();
             mainStage.setScene(selfScene);
         });
-
         HBox options=new HBox();
         options.setSpacing(10);
         options.getChildren().addAll(save,load,order);
@@ -91,9 +84,6 @@ public class AdminOrderController extends AdminInsideControllers {
         options.setLayoutY(10);
         hbox.getChildren().addAll(item,addToOrder);
         pane.getChildren().addAll(hbox,scrollPane,options);
-
         return pane;
     }
-
-
 }

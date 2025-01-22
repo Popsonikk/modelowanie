@@ -16,21 +16,14 @@ import main.models.Item;
 import java.util.ArrayList;
 
 public class AdminStorageController extends AdminInsideControllers {
-
-
     protected Stage mainStage;
     protected Scene selfScene;
-
-
     public void setSelfScene(Scene selfScene) {
         this.selfScene = selfScene;
     }
-
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
     }
-
-
     public Pane createScenePane()
     {
         items=new ArrayList<>();
@@ -58,7 +51,6 @@ public class AdminStorageController extends AdminInsideControllers {
                 createColumnCeil(200,"Ilość"),
                 createColumnCeil(200,"Cena"));
         vBox.getChildren().addAll(b);
-
         for (Item i : items)
         {
             HBox box=new HBox();
@@ -78,7 +70,6 @@ public class AdminStorageController extends AdminInsideControllers {
                     vBox.getChildren().clear();
                     createView();
                 }
-
             });
             Button editPrice=new Button("C");
             editPrice.getStyleClass().add("editButton");
@@ -95,15 +86,11 @@ public class AdminStorageController extends AdminInsideControllers {
                     vBox.getChildren().clear();
                     createView();
                 }
-
             });
             box.getChildren().addAll(createColumnCeil(300,i.getName()),
                     createColumnCeil(175,String.valueOf(i.getNumber())),
                     createColumnCeil(175,String.valueOf(i.getCash())),editNumber,editPrice);
-
-
             vBox.getChildren().addAll(box);
-
         }
     }
 }

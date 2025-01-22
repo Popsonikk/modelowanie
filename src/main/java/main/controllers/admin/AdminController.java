@@ -17,7 +17,6 @@ public class AdminController extends LoggedWindow {
         init();
         mainPane.getChildren().addAll(createAccountButton(),createOrderButton(),createStorageButton());
     }
-
     public void setUpControllers(Stage stage, Scene adminScene) {
         adminStorageController = new AdminStorageController();
         adminStorageController.setMainStage(stage); // Setting mainStage here
@@ -28,58 +27,31 @@ public class AdminController extends LoggedWindow {
         adminRegisterController=new AdminRegisterController();
         adminRegisterController.setMainStage(stage);
         adminRegisterController.setSelfScene(adminScene);
-
-
     }
-
     private Button createOrderButton()
     {
-
-        Button orderButton = new Button("Złóż zamówienie");
-        orderButton.getStyleClass().add("interfaceButton");
-        orderButton.setLayoutX(300);
-        orderButton.setLayoutY(50);
+        Button orderButton = createButton("Złóż zamówienie",300,50);
         Scene scene=new Scene(adminOrderController.createScenePane(),800,600);
         orderButton.setOnAction(event -> {mainStage.setScene(scene);});
         return orderButton;
-
     }
-
     private Button createStorageButton()
     {
-
-
-        Button orderButton = new Button("Zobacz magazyn");
-        orderButton.getStyleClass().add("interfaceButton");
-        orderButton.setLayoutX(300);
-        orderButton.setLayoutY(250);
+        Button orderButton = createButton("Zobacz magazyn",300,250);
         Scene scene=new Scene(adminStorageController.createScenePane(),800,600);
         orderButton.setOnAction(event -> {
             AdminLogic logic=new AdminLogic(new SQLCommands(new SQLiteConnector()));
             adminStorageController.setStorageItems(logic.getItems());
             adminStorageController.createView();
             mainStage.setScene(scene);
-
         });
         return orderButton;
     }
-
     protected Button createAccountButton()
     {
-
-        Button button=new Button("Stwórz konto");
-        button.getStyleClass().add("interfaceButton");
-        button.setLayoutX(575);
-        button.setLayoutY(50);
+        Button button=createButton("Stwórz konto",575,50);
         Scene scene=new Scene(adminRegisterController.createScenePane(),800,600);
         button.setOnAction(e -> {mainStage.setScene(scene); });
-
         return button;
     }
-
-
-
-
-
-
 }

@@ -155,7 +155,7 @@ public class SQLCommands {
             throw new RuntimeException(e);
         }
     }
-    public  void addOrderRow(String name,String item, int number)
+    public void addOrderRow(String name,String item, int number)
     {
         String sql="INSERT INTO orders (name,itemName,number) VALUES (?,?,?)";
         try(Connection conn=connector.connect();
@@ -200,7 +200,20 @@ public class SQLCommands {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
+    }
+    public void updateMoney(String name,float money)
+    {
+        String sql="UPDATE users SET cash=cash+? WHERE username= ?";
+        try(Connection conn= connector.connect();
+        PreparedStatement statement= conn.prepareStatement(sql))
+        {
+            statement.setFloat(1, money);
+            statement.setString(2, name);
+            statement.executeUpdate();
+            System.out.println("Money added");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 

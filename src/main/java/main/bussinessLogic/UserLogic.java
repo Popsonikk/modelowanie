@@ -20,4 +20,8 @@ public class UserLogic {
     {
         return commands.getAccount(username,password);
     }
+    public void updateMoney(String username, float money)
+    {
+        commands.updateMoney(username,money);
+    }
 }
