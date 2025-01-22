@@ -215,4 +215,18 @@ public class SQLCommands {
             throw new RuntimeException(e);
         }
     }
+    public  void buyItem(String name, int number)
+    {
+        String sql="UPDATE items SET number=number- ? WHERE name= ?";
+        try(Connection conn=connector.connect();
+            PreparedStatement statement= conn.prepareStatement(sql)) {
+            statement.setInt(1, number);
+            statement.setString(2, name);
+            statement.executeUpdate();
+            System.out.println("Item updated");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

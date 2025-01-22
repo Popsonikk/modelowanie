@@ -1,6 +1,7 @@
 package main.controllers.client;
 
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
@@ -10,7 +11,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import main.bussinessLogic.PurchaseLogic;
 import main.controllers.templates.InsideController;
+import main.database.SQLCommands;
+import main.database.SQLiteConnector;
 import main.models.Item;
 import main.models.User;
 
@@ -64,8 +68,24 @@ public class ShoppingController extends InsideController{
         Button back=new Button("Zakup");
         back.getStyleClass().add("orderButton");
         back.setOnAction(e->{
+            float price=Float.parseFloat(purchaseText.getText());
+            float cash=Float.parseFloat(accountValue.getText());
+            if(price>cash)
+            {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Brak środków!");
+                alert.show();
+                return;
+            }
 
+            PurchaseLogic purchaseLogic=new PurchaseLogic(new SQLCommands(new SQLiteConnector()));
+            purchaseLogic.doPurchase(purchaseList,price,loggedUser.getName());
+            vBox.getChildren().clear();
+            purchaseBox.getChildren().clear();
             purchaseList.clear();
+            purchaseText.setText("0");
+            loggedUser.updateCash(-price);
+            accountValue.setText(String.format("%.2f",loggedUser.getCash()));
             mainStage.setScene(selfScene);
 
         });

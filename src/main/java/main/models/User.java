@@ -19,7 +19,7 @@ public class User {
         return cash;
     }
 
-    public void updateCash(int c) {
+    public void updateCash(float c) {
         cash += c;
     }
 
