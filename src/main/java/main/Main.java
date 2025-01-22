@@ -7,6 +7,9 @@ import javafx.stage.Stage;
 import main.controllers.*;
 import main.controllers.admin.AdminController;
 import main.controllers.client.ClientController;
+import main.controllers.employee.EmployeeController;
+import main.controllers.users.LoginController;
+import main.controllers.users.RegisterController;
 
 import java.io.IOException;
 
@@ -62,6 +65,8 @@ public class Main extends Application {
         clientController.setMainScene(mainScene);
         clientController.setMainStage(stage);
         clientController.setSelfScene(clientScene);
+        clientController.setUpControllers(stage,clientScene);
+        clientController.startInit();
 
 
         stage.setTitle("Modelowanie biznesowe");

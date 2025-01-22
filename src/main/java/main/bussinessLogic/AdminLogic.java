@@ -10,30 +10,22 @@ public class AdminLogic {
     public AdminLogic(SQLCommands sqlCommands) {
         this.commands = sqlCommands;
     }
-
     public void doOrder(List<Item> items)
     {
-        for(Item item : items)
-        {
+        for(Item item : items) {
             Item sQLItem=commands.getItem(item.getName());
-            if(sQLItem!=null)
-            {
+            if(sQLItem!=null) {
                 int number=item.getNumber()+ sQLItem.getNumber();
                 commands.updateItemNumber(item.getName(), number);
             }
             else
-            {
                 commands.addItem(item.getName(), item.getNumber(), 0);
-            }
-
         }
     }
     public  void saveOrder(List<Item> items, String name)
     {
         if(commands.checkOrder(name))
-        {
             System.out.println("Order already exists");
-        }
         else
         {
             for(Item item : items)
@@ -42,23 +34,16 @@ public class AdminLogic {
             }
         }
     }
-    public  List<Item> getOrder(String name)
-    {
+    public  List<Item> getOrder(String name) {
          return commands.getOrder(name);
     }
-    public  List<Item> getItems()
-    {
+    public  List<Item> getItems() {
         return commands.getItems();
     }
-    public  void updateItemNumber(String i,int number)
-    {
+    public  void updateItemNumber(String i,int number) {
         commands.updateItemNumber(i,number);
     }
-    public  void updateItemPrice(String i,float number)
-    {
+    public  void updateItemPrice(String i,float number) {
         commands.updateItemCash(i,number);
     }
-
-
-
 }

@@ -10,12 +10,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import main.bussinessLogic.AdminLogic;
 import main.bussinessLogic.UserLogic;
+import main.controllers.templates.InsideController;
 import main.database.SQLCommands;
 import main.database.SQLiteConnector;
 
-public class AdminRegisterController extends AdminInsideControllers {
+public class RegisterController extends InsideController {
     protected Stage mainStage;
     protected Scene selfScene;
     public void setSelfScene(Scene selfScene) {

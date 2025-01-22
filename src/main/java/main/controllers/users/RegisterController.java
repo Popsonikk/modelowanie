@@ -1,4 +1,4 @@
-package main.controllers;
+package main.controllers.users;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -9,11 +9,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import main.bussinessLogic.UserLogic;
+import main.controllers.templates.RegisterItems;
 import main.database.SQLCommands;
 import main.database.SQLiteConnector;
 

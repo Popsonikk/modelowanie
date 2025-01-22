@@ -17,4 +17,10 @@ module main.controllers.modelowanie {
     opens main.bussinessLogic to javafx.fxml;
     exports main.controllers.client;
     opens main.controllers.client to javafx.fxml;
+    exports main.controllers.templates;
+    opens main.controllers.templates to javafx.fxml;
+    exports main.controllers.employee;
+    opens main.controllers.employee to javafx.fxml;
+    exports main.controllers.users;
+    opens main.controllers.users to javafx.fxml;
 }

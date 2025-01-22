@@ -1,4 +1,4 @@
-package main.controllers;
+package main.controllers.templates;
 
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -70,5 +70,7 @@ public abstract  class LoggedWindow extends RegisterItems {
         button.setLayoutY(y);
         return button;
     }
+    protected abstract void setUpControllers(Stage stage, Scene adminScene);
+    protected abstract void startInit();
 
 }

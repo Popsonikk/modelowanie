@@ -3,28 +3,28 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import main.bussinessLogic.AdminLogic;
-import main.controllers.LoggedWindow;
+import main.controllers.templates.LoggedWindow;
 import main.database.SQLCommands;
 import main.database.SQLiteConnector;
 
 public class AdminController extends LoggedWindow {
 
-    private AdminStorageController adminStorageController;
-    private AdminRegisterController adminRegisterController;
-    private AdminOrderController adminOrderController;
+    private StorageController adminStorageController;
+    private RegisterController adminRegisterController;
+    private OrderController adminOrderController;
     public void startInit()
     {
         init();
         mainPane.getChildren().addAll(createAccountButton(),createOrderButton(),createStorageButton());
     }
     public void setUpControllers(Stage stage, Scene adminScene) {
-        adminStorageController = new AdminStorageController();
+        adminStorageController = new StorageController();
         adminStorageController.setMainStage(stage); // Setting mainStage here
         adminStorageController.setSelfScene(adminScene);
-        adminOrderController=new AdminOrderController();
+        adminOrderController=new OrderController();
         adminOrderController.setMainStage(stage);
         adminOrderController.setSelfScene(adminScene);
-        adminRegisterController=new AdminRegisterController();
+        adminRegisterController=new RegisterController();
         adminRegisterController.setMainStage(stage);
         adminRegisterController.setSelfScene(adminScene);
     }

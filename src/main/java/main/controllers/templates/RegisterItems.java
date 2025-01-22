@@ -1,11 +1,9 @@
-package main.controllers;
+package main.controllers.templates;
 
-import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
 
 public class RegisterItems {
 

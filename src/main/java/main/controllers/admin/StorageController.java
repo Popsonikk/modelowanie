@@ -9,13 +9,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import main.bussinessLogic.AdminLogic;
+import main.controllers.templates.InsideController;
 import main.database.SQLCommands;
 import main.database.SQLiteConnector;
 import main.models.Item;
 
 import java.util.ArrayList;
 
-public class AdminStorageController extends AdminInsideControllers {
+public class StorageController extends InsideController {
     protected Stage mainStage;
     protected Scene selfScene;
     public void setSelfScene(Scene selfScene) {

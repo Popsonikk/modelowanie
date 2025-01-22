@@ -39,4 +39,14 @@ public class Item {
     public void setNumber(int number) {
         this.number = number;
     }
+
+    public void addNumber() {
+        this.number++;
+    }
+    public void deleteNumber() {
+        this.number--;
+    }
+    public void addCash(float money) {
+        cash += money;
+    }
 }

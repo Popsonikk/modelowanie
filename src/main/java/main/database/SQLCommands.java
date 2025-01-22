@@ -215,7 +215,4 @@ public class SQLCommands {
             throw new RuntimeException(e);
         }
     }
-
-
-
 }

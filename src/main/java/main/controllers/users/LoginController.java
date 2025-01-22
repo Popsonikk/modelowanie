@@ -1,4 +1,4 @@
-package main.controllers;
+package main.controllers.users;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 import main.bussinessLogic.UserLogic;
 import main.controllers.admin.AdminController;
 import main.controllers.client.ClientController;
+import main.controllers.employee.EmployeeController;
+import main.controllers.templates.RegisterItems;
 import main.database.SQLCommands;
 import main.database.SQLiteConnector;
 import main.models.User;
@@ -106,6 +108,7 @@ public class LoginController extends RegisterItems implements Initializable {
                 {
                     case 0:{
                         clientController.setLoggedUser(user);
+                        clientController.setUserForContorller(user);
                         mainStage.setScene(clientScene);
                         break;
                     }

@@ -1,5 +1,6 @@
-package main.controllers.admin;
+package main.controllers.templates;
 
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
@@ -8,13 +9,13 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import main.controllers.RegisterItems;
+import javafx.stage.Stage;
 import main.models.Item;
 
 import java.net.URL;
 import java.util.List;
 
-public abstract class AdminInsideControllers extends RegisterItems {
+public abstract class InsideController extends RegisterItems {
 
     protected List<Item> items;
     protected VBox vBox;
@@ -63,5 +64,6 @@ public abstract class AdminInsideControllers extends RegisterItems {
         this.items = storageItems;
     }
     protected abstract Pane createScenePane();
+
 
 }

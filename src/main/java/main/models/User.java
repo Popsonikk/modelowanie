@@ -4,9 +4,9 @@ public class User {
 
     private String name;
     private int role;
-    private int cash;
+    private float cash;
 
-    public User( String name,int role,int cash )  {
+    public User( String name,int role,float cash )  {
 
         this.cash = cash;
         this.role = role;
@@ -15,7 +15,7 @@ public class User {
 
 
 
-    public int getCash() {
+    public float getCash() {
         return cash;
     }
 
