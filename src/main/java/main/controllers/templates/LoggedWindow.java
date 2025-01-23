@@ -70,7 +70,7 @@ public abstract  class LoggedWindow extends RegisterItems {
         button.setLayoutY(y);
         return button;
     }
-    protected abstract void setUpControllers(Stage stage, Scene adminScene);
-    protected abstract void startInit();
+    public abstract void setUpControllers(Stage stage, Scene adminScene);
+    public abstract void startInit();
 
 }

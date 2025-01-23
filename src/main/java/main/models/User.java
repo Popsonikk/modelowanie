@@ -5,6 +5,7 @@ public class User {
     private String name;
     private int role;
     private float cash;
+    private boolean active;
 
     public User( String name,int role,float cash )  {
 
@@ -37,5 +38,13 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

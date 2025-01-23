@@ -2,6 +2,7 @@ package main.bussinessLogic;
 
 import main.database.SQLCommands;
 import main.models.Item;
+import main.models.User;
 
 import java.util.List;
 
@@ -15,5 +16,14 @@ public class PurchaseLogic {
             commands.buyItem(item.getName(), item.getNumber());
         }
         commands.updateMoney(name,-price);
+    }
+    public List<User> getUsers()
+    {
+        return commands.getUsers();
+    }
+    public void addCard(String name)
+    {
+        commands.createCard();
+        commands.addCard(name,commands.getCardID());
     }
 }
