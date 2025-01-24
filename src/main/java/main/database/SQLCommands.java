@@ -71,9 +71,11 @@ public class SQLCommands {
             statement.setString(2, password);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                System.out.println("Account found");
-                return new User(rs.getString("username"),
+                User user=new User(rs.getString("username"),
                         rs.getInt("role"), rs.getInt("cash"));
+                user.setActive(rs.getDate("cardID") != null);
+                System.out.println("Account found");
+                return user;
             } else {
                 System.out.println("Account not found");
                 return null;
@@ -283,5 +285,51 @@ public class SQLCommands {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+    public int findCard(String  name)
+    {
+        String sql="SELECT c.id FROM cards AS c JOIN users AS u ON c.id=u.cardID WHERE u.username=?;";
+        try(Connection conn= connector.connect();
+        PreparedStatement statement= conn.prepareStatement(sql)) {
+            statement.setString(1, name);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+
+                System.out.println("Card found");
+                return rs.getInt("id");
+            }
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return -1;
+    }
+    public void updatePoints(int id,int points) {
+        String sql="UPDATE cards SET points=points+? WHERE id=?";
+        try(Connection conn= connector.connect();
+        PreparedStatement statement= conn.prepareStatement(sql))
+        {
+            statement.setInt(1, points);
+            statement.setInt(2, id);
+            statement.executeUpdate();
+            System.out.println("Points added");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public int getPoints(int id) {
+        String sql="SELECT points FROM cards WHERE id=?";
+        try(Connection conn= connector.connect();
+            PreparedStatement statement= conn.prepareStatement(sql))
+        {
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next())
+                return rs.getInt("points");
+            System.out.println("Points added");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return -1;
     }
 }

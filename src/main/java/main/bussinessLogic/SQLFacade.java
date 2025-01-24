@@ -80,5 +80,13 @@ public class SQLFacade {
         commands.createCard();
         commands.addCard(name,commands.getCardID());
     }
+    public void updateCard(String name,int points) {
+        int cardID=commands.findCard(name);
+        commands.updatePoints(cardID,points);
+    }
+    public int getPoints(String name) {
+        int cardID=commands.findCard(name);
+        return commands.getPoints(cardID);
+    }
 
 }

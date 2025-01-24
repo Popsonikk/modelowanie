@@ -30,12 +30,14 @@ public class ShoppingController extends InsideController{
     private List<Item> items;
     private VBox vBox;
     private VBox purchaseBox;
+    Button cardPurchase;
 
     public void setStorageItems(List<Item> storageItems) {
         this.items = storageItems;
     }
     public void setLoggedUser(User loggedUser) {
         this.loggedUser = loggedUser;
+        cardPurchase.setDisable(!loggedUser.isActive());
         accountValue.setText(String.format("%.2f",loggedUser.getCash()));
     }
     @Override
@@ -65,8 +67,10 @@ public class ShoppingController extends InsideController{
                 alert.show();
                 return;
             }
-            SQLFacade purchaseLogic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
-            purchaseLogic.doPurchase(purchaseList,price,loggedUser.getName());
+            SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
+            if(loggedUser.isActive())
+               logic.updateCard(loggedUser.getName(), (int)price*10);
+            logic.doPurchase(purchaseList,price,loggedUser.getName());
             vBox.getChildren().clear();
             purchaseBox.getChildren().clear();
             purchaseList.clear();
@@ -76,8 +80,52 @@ public class ShoppingController extends InsideController{
             mainStage.setScene(selfScene);
 
         });
+        cardPurchase=InterfaceItems.createButton("Zakup z kartą",200,10,"orderButton");
 
-        pane.getChildren().addAll(shopPane,purchasePane,back,accountValue,purchaseText);
+        cardPurchase.setOnAction(e->{
+            SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
+            int cardPoints=logic.getPoints(loggedUser.getName());
+            int usedPoints=0;
+            float price=Float.parseFloat(purchaseText.getText());
+            if(cardPoints>0)
+            {
+                if(((float) cardPoints /10)>price)
+                {
+                    usedPoints=(int)price*10;
+                    price=0;
+                }
+                else
+                {
+                    price-=(float)(cardPoints/10);
+                    usedPoints=cardPoints;
+                }
+            }
+
+            float cash=Float.parseFloat(accountValue.getText());
+            if(price>cash)
+            {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Brak środków!");
+                alert.show();
+                return;
+            }
+            usedPoints-=(int)(price*10);
+            logic.doPurchase(purchaseList,price,loggedUser.getName());
+            logic.updateCard(loggedUser.getName(), -usedPoints);
+            vBox.getChildren().clear();
+            purchaseBox.getChildren().clear();
+            purchaseList.clear();
+            purchaseText.setText("0");
+            loggedUser.updateCash(-price);
+            accountValue.setText(String.format("%.2f",loggedUser.getCash()));
+            mainStage.setScene(selfScene);
+
+
+        });
+
+
+
+        pane.getChildren().addAll(shopPane,purchasePane,back,cardPurchase,accountValue,purchaseText);
         createView();
         return pane;
     }
@@ -91,7 +139,7 @@ public class ShoppingController extends InsideController{
         vBox.getChildren().addAll(b);
         for (Item i : items)
         {
-            if(i.getCash()==0)
+            if(i.getCash()==0||i.getNumber()<1)
                 continue;
             HBox box=getCanvasBox();
             Button addToBasket=InterfaceItems.createButton("+",50,30,"editButton");
@@ -107,6 +155,8 @@ public class ShoppingController extends InsideController{
                             createPurchaseView();
                             return;
                         }
+                        if(purchase.getNumber()==i.getNumber())
+                            return;
                     }
                 }
                 purchaseList.add(new Item(i.getName(), 1,i.getCash()));

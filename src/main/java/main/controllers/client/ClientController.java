@@ -23,6 +23,8 @@ public class ClientController extends UserTemplateController {
             dialog.showAndWait();
             if(dialog.getResult() != null){
                 float amount = Float.parseFloat(dialog.getResult());
+                user.updateCash(amount);
+                shoppingController.setLoggedUser(user);
                 SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
                 logic.updateMoney(user.getName(), amount);
             }
