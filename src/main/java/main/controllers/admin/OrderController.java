@@ -7,84 +7,102 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import main.bussinessLogic.AdminLogic;
+import main.bussinessLogic.SQLFacade;
 import main.controllers.templates.InsideController;
+import main.controllers.templates.InterfaceItems;
 import main.database.SQLCommands;
 import main.database.SQLiteConnector;
 import main.models.Item;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class OrderController extends InsideController {
 
-    protected Stage mainStage;
-    protected Scene selfScene;
-    public void setSelfScene(Scene selfScene) {
-        this.selfScene = selfScene;
-    }
-    public void setMainStage(Stage mainStage) {
-        this.mainStage = mainStage;
-    }
+
+    private List<Item> items;
+    private VBox vBox;
+
 
     @Override
     protected Pane createScenePane() {
-        ScrollPane scrollPane = createScrollPane();
-        items=new ArrayList<>();
-        vBox = new VBox();
-        vBox.setPrefHeight(500);
-        vBox.setPrefWidth(780);
-        scrollPane.setContent(vBox);
         Pane pane=getPane();
-        HBox hbox=new HBox();
-        hbox.setLayoutX(10);
-        hbox.setLayoutY(10);
-        hbox.setPrefHeight(50);
+        ScrollPane scrollPane = createScrollPane(780,10);
+        items=new ArrayList<>();
+        vBox = getBox(scrollPane,780);
+
+        HBox hbox=createBox(10,10,0,50);
+
         TextField item=new TextField();
         item.getStyleClass().add("orderField");
-        Button addToOrder=new Button("Dodaj ");
-        addToOrder.getStyleClass().add("orderButton");
+        Button addToOrder= InterfaceItems.createButton("Dodaj",0,0,"orderButton");
         addToOrder.setOnAction(event -> {
             Item i=new Item(item.getText().split(",")[0].trim(),Integer.parseInt(item.getText().split(",")[1].trim()));
             items.add(i);
-            vBox.getChildren().add(createShowBox(i));
+            createView();
             item.clear();
 
         });
-        Button save=new Button("Zapisz ");
-        save.getStyleClass().add("orderButton");
+        Button save=InterfaceItems.createButton("Zapisz",0,0,"orderButton");
         save.setOnAction(event -> {
-            AdminLogic logic=new AdminLogic(new SQLCommands(new SQLiteConnector()));
+            SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
             logic.saveOrder(items,item.getText());
             item.clear();
         });
-        Button load=new Button("Wczytaj ");
-        load.getStyleClass().add("orderButton");
+        Button load=InterfaceItems.createButton("Wczytaj",0,0,"orderButton");
         load.setOnAction(e -> {
             items.clear();
             vBox.getChildren().clear();
-            AdminLogic logic=new AdminLogic(new SQLCommands(new SQLiteConnector()));
+            SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
             items=new ArrayList<>(logic.getOrder(item.getText()));
             for(Item i:items)
                 vBox.getChildren().add(createShowBox(i));
             item.clear();
         });
-        Button order=new Button("Wykonaj ");
-        order.getStyleClass().add("orderButton");
+        Button order=InterfaceItems.createButton("Wykonaj",0,0,"orderButton");;
         order.setOnAction(event -> {
-            AdminLogic logic=new AdminLogic(new SQLCommands(new SQLiteConnector()));
+            SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
             logic.doOrder(items);
             vBox.getChildren().clear();
             items.clear();
             mainStage.setScene(selfScene);
         });
-        HBox options=new HBox();
-        options.setSpacing(10);
+        HBox options=createBox(395,10,10,50);
         options.getChildren().addAll(save,load,order);
-        options.setLayoutX(395);
-        options.setLayoutY(10);
         hbox.getChildren().addAll(item,addToOrder);
         pane.getChildren().addAll(hbox,scrollPane,options);
         return pane;
+    }
+    private HBox createBox(int x, int y,int spacing,int height) {
+        HBox box=new HBox();
+        box.setSpacing(spacing);
+        box.setLayoutX(x);
+        box.setLayoutY(y);
+        box.setPrefHeight(height);
+        return box;
+    }
+
+    @Override
+    public void createView() {
+        vBox.getChildren().clear();
+        for(Item i:items)
+        {
+            HBox hbox=createShowBox(i);
+            vBox.getChildren().add(hbox);
+        }
+
+
+    }
+
+    protected HBox createShowBox(Item text)
+    {
+        HBox box=getCanvasBox();
+        Button b=InterfaceItems.createButton("X",50,30,"deleteButton");
+        b.setOnAction(event -> {
+            vBox.getChildren().remove(box);
+            items.remove(text);
+        });
+        box.getChildren().addAll(createColumnCeil(350,text.getName()),createColumnCeil(350,String.valueOf(text.getNumber())),b);
+        return box;
     }
 }

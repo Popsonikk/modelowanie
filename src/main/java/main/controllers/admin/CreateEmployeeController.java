@@ -7,47 +7,42 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import main.bussinessLogic.UserLogic;
+import main.bussinessLogic.SQLFacade;
 import main.controllers.templates.InsideController;
+import main.controllers.templates.InterfaceItems;
 import main.database.SQLCommands;
 import main.database.SQLiteConnector;
 
-public class RegisterController extends InsideController {
-    protected Stage mainStage;
-    protected Scene selfScene;
-    public void setSelfScene(Scene selfScene) {
-        this.selfScene = selfScene;
-    }
-    public void setMainStage(Stage mainStage) {
-        this.mainStage = mainStage;
-    }
+public class CreateEmployeeController extends InsideController {
+
     @Override
     protected Pane createScenePane() {
         Pane pane=getPane();
-        Text text=createText("Zarejestruj pracownika",600,50,100,75,32);
-        text.setFill(Paint.valueOf("#006400"));
-        HBox usernameBox=createHBox(175,"Podaj nickname:");
-        HBox passBox=createHBox(275,"Podaj hasło:");
+        Text text= InterfaceItems.createText("Zarejestruj pracownika",600,50,100,75,32);
+
+
+        HBox usernameBox=InterfaceItems.createHBox(175,"Podaj nickname:");
         TextField usernameField=new TextField();
-        TextField passField=new PasswordField();
         usernameField.getStyleClass().add("registerField");
-        passField.getStyleClass().add("registerField");
         usernameBox.getChildren().add(usernameField);
+
+        HBox passBox=InterfaceItems.createHBox(275,"Podaj hasło:");
+        TextField passField=new PasswordField();
+        passField.getStyleClass().add("registerField");
         passBox.getChildren().add(passField);
-        Button loginButton=new Button("Stwórz konto");
-        loginButton.getStyleClass().add("interfaceButton");
-        loginButton.setLayoutY(500);
-        loginButton.setLayoutX(300);
+
+        Button loginButton=InterfaceItems.createButton("Stwórz konto",300,500,"interfaceButton");
+
         ChoiceBox<String> choiceBox=new ChoiceBox<>();
         choiceBox.getItems().addAll("------","Pracownik","Administrator");
         choiceBox.getStyleClass().add("interfaceButton");
         choiceBox.getSelectionModel().selectFirst();
         choiceBox.setLayoutX(300);
         choiceBox.setLayoutY(375);
-        pane.getChildren().addAll(text,usernameBox,passBox,choiceBox,loginButton);
+
+
         loginButton.setOnAction(e -> {
             int i;
             if(choiceBox.getSelectionModel().getSelectedIndex()==1)
@@ -63,13 +58,20 @@ public class RegisterController extends InsideController {
                 System.out.println("blank fields");
                 return;
             }
-            UserLogic logic=new UserLogic(new SQLCommands(new SQLiteConnector()));
+            SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
             logic.addAccount(usernameField.getText(),passField.getText(),i);
             usernameField.clear();
             passField.clear();
             choiceBox.getSelectionModel().selectFirst();
             mainStage.setScene(selfScene);
         });
+
+        pane.getChildren().addAll(text,usernameBox,passBox,choiceBox,loginButton);
         return pane;
+    }
+
+    @Override
+    public void createView() {
+
     }
 }

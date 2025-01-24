@@ -11,8 +11,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import main.bussinessLogic.PurchaseLogic;
+import main.bussinessLogic.SQLFacade;
 import main.controllers.templates.InsideController;
+import main.controllers.templates.InterfaceItems;
 import main.database.SQLCommands;
 import main.database.SQLiteConnector;
 import main.models.Item;
@@ -22,51 +23,38 @@ import java.util.*;
 
 public class ShoppingController extends InsideController{
 
-    private Stage mainStage;
-    private Scene selfScene;
     private List<Item> purchaseList;
     private User loggedUser;
     private Text purchaseText;
     private Text accountValue;
-
+    private List<Item> items;
+    private VBox vBox;
     private VBox purchaseBox;
-    public void setSelfScene(Scene selfScene) {
-        this.selfScene = selfScene;
-    }
-    public void setMainStage(Stage mainStage) {
-        this.mainStage = mainStage;
-    }
 
+    public void setStorageItems(List<Item> storageItems) {
+        this.items = storageItems;
+    }
     public void setLoggedUser(User loggedUser) {
         this.loggedUser = loggedUser;
         accountValue.setText(String.format("%.2f",loggedUser.getCash()));
-
     }
-
     @Override
     protected Pane createScenePane() {
-        accountValue=createText("0",550,25);
-        purchaseText=createText("0",700,25);
+        accountValue= InterfaceItems.createText("0",100,50,550,25,16);
+        purchaseText=InterfaceItems.createText("0",100,50,700,25,16);
+
         purchaseList = new ArrayList<>();
-        vBox = new VBox();
         items=new ArrayList<>();
+
         Pane pane=getPane();
-        ScrollPane shopPane=createScrollPane();
-        vBox.setPrefHeight(500);
-        vBox.setPrefWidth(390);
-        shopPane.setPrefWidth(390);
-        shopPane.setContent(vBox);
+        ScrollPane shopPane=createScrollPane(390,10);
+        vBox = getBox(shopPane,390);
 
-        ScrollPane purchasePane=createScrollPane();
-        purchasePane.setPrefWidth(390);
-        purchasePane.setLayoutX(400);
-        purchaseBox=new VBox();
-        purchaseBox.setPrefHeight(500);
-        purchaseBox.setPrefWidth(390);
-        purchasePane.setContent(purchaseBox);
+        ScrollPane purchasePane=createScrollPane(390,400);
+        purchaseBox=getBox(purchasePane,390);
 
-        Button back=new Button("Zakup");
-        back.getStyleClass().add("orderButton");
+
+        Button back=InterfaceItems.createButton("Zakup",10,10,"orderButton");
         back.setOnAction(e->{
             float price=Float.parseFloat(purchaseText.getText());
             float cash=Float.parseFloat(accountValue.getText());
@@ -77,8 +65,7 @@ public class ShoppingController extends InsideController{
                 alert.show();
                 return;
             }
-
-            PurchaseLogic purchaseLogic=new PurchaseLogic(new SQLCommands(new SQLiteConnector()));
+            SQLFacade purchaseLogic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
             purchaseLogic.doPurchase(purchaseList,price,loggedUser.getName());
             vBox.getChildren().clear();
             purchaseBox.getChildren().clear();
@@ -89,20 +76,15 @@ public class ShoppingController extends InsideController{
             mainStage.setScene(selfScene);
 
         });
-        back.setLayoutX(300);
-        back.setLayoutY(5);
-
 
         pane.getChildren().addAll(shopPane,purchasePane,back,accountValue,purchaseText);
-
         createView();
         return pane;
     }
     public void createView()
     {
         vBox.getChildren().clear();
-        HBox b=new HBox();
-        b.getStyleClass().add("basketBorder");
+        HBox b=getCanvasBox();
         b.getChildren().addAll(createColumnCeil(150,"Przedmiot"),
                 createColumnCeil(50,"Ilość"),
                 createColumnCeil(50,"Cena"));
@@ -111,18 +93,14 @@ public class ShoppingController extends InsideController{
         {
             if(i.getCash()==0)
                 continue;
-            HBox box=new HBox();
-            box.getStyleClass().add("basketBorder");
-            Button addToBasket=new Button("+");
-            addToBasket.getStyleClass().add("editButton");
+            HBox box=getCanvasBox();
+            Button addToBasket=InterfaceItems.createButton("+",50,30,"editButton");
             addToBasket.setOnAction(event -> {
                 for(Item purchase:purchaseList)
                 {
                     if(Objects.equals(purchase.getName(), i.getName()))
                     {
-                        if(purchase.getNumber()==i.getNumber())
-                            return;
-                        else
+                        if(purchase.getNumber()<i.getNumber())
                         {
                             purchase.addNumber();
                             updateSum(i.getCash());
@@ -134,8 +112,6 @@ public class ShoppingController extends InsideController{
                 purchaseList.add(new Item(i.getName(), 1,i.getCash()));
                 updateSum(i.getCash());
                 createPurchaseView();
-
-
             });
 
             box.getChildren().addAll(createColumnCeil(150,i.getName()),
@@ -151,31 +127,17 @@ public class ShoppingController extends InsideController{
         {
             if(i.getNumber()==0)
                 continue;
-            HBox box=new HBox();
-            box.getStyleClass().add("basketBorder");
-            Button deleteFromBasket=new Button("-");
-            deleteFromBasket.getStyleClass().add("editButton");
+            HBox box=getCanvasBox();
+            Button deleteFromBasket=InterfaceItems.createButton("-",50,30,"editButton");
             deleteFromBasket.setOnAction(event -> {
                 i.deleteNumber();
                 updateSum(-i.getCash());
-
             });
             box.getChildren().addAll(createColumnCeil(200,i.getName()),
                     createColumnCeil(75,String.valueOf(i.getNumber())),
                     deleteFromBasket);
             purchaseBox.getChildren().addAll(box);
         }
-    }
-    private Text createText(String s,double x,double y)
-    {
-        Text text=new Text(s);
-        text.setWrappingWidth(100);
-        text.setTextAlignment(TextAlignment.CENTER);
-        text.setFont(new Font(16));
-        text.prefHeight(50);
-        text.setLayoutX(x);
-        text.setLayoutY(y);
-        return text;
     }
     private void updateSum(float f)
     {

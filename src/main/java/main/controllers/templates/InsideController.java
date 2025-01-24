@@ -1,7 +1,6 @@
 package main.controllers.templates;
 
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -10,21 +9,27 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import main.models.Item;
 
 import java.net.URL;
-import java.util.List;
 
-public abstract class InsideController extends RegisterItems {
+public abstract class InsideController {
 
-    protected List<Item> items;
-    protected VBox vBox;
-    protected ScrollPane createScrollPane()
+    protected Stage mainStage;
+    protected Scene selfScene;
+    public void setMainStage(Stage mainStage) {
+        this.mainStage = mainStage;
+    }
+
+    public void setSelfScene(Scene selfScene) {
+        this.selfScene = selfScene;
+    }
+
+    protected ScrollPane createScrollPane(double width,double x)
     {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.prefHeight(500);
-        scrollPane.prefWidth(780);
-        scrollPane.setLayoutX(10);
+        scrollPane.prefWidth(width);
+        scrollPane.setLayoutX(x);
         scrollPane.setLayoutY(60);
         return scrollPane;
     }
@@ -42,28 +47,27 @@ public abstract class InsideController extends RegisterItems {
     {
         Pane pane=new Pane();
         URL cssResource = getClass().getResource("/main/style.css");
+        assert cssResource != null;
         pane.getStylesheets().add(cssResource.toExternalForm());
         return pane;
     }
-    protected HBox createShowBox(Item text)
+    protected VBox getBox(ScrollPane pane,double width)
+    {
+        VBox box=new VBox();
+        box.setPrefWidth(width);
+        box.setPrefHeight(500);
+        pane.setContent(box);
+        return box;
+    }
+    protected HBox getCanvasBox()
     {
         HBox box=new HBox();
         box.getStyleClass().add("basketBorder");
-        Button b=new Button("X");
-        b.getStyleClass().add("deleteButton");
-        b.setOnAction(event -> {
-            vBox.getChildren().remove(box);
-            items.remove(text);
-
-        });
-
-        box.getChildren().addAll(createColumnCeil(350,text.getName()),createColumnCeil(350,String.valueOf(text.getNumber())),b);
         return box;
     }
-    public void setStorageItems(List<Item> storageItems) {
-        this.items = storageItems;
-    }
+
     protected abstract Pane createScenePane();
+    public  abstract  void createView();
 
 
 }

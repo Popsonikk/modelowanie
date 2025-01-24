@@ -1,44 +1,40 @@
 package main.controllers.client;
 
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
-import main.bussinessLogic.AdminLogic;
-import main.bussinessLogic.UserLogic;
-import main.controllers.templates.LoggedWindow;
+import main.bussinessLogic.SQLFacade;
+import main.controllers.templates.InterfaceItems;
+import main.controllers.templates.UserTemplateController;
 import main.database.SQLCommands;
 import main.database.SQLiteConnector;
 import main.models.User;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class ClientController extends LoggedWindow  {
+public class ClientController extends UserTemplateController {
     private ShoppingController shoppingController;
-
+    private User user;
 
     private Button createAddMoneyButton() {
-        Button addMoneyButton = createButton("Zasil konto",300,50);
+        Button addMoneyButton = InterfaceItems.createButton("Zasil konto",300,50,"interfaceButton");
         addMoneyButton.setOnAction(e -> {
             TextInputDialog dialog = new TextInputDialog();
             dialog.setTitle("Zasil konto");
             dialog.showAndWait();
             if(dialog.getResult() != null){
                 float amount = Float.parseFloat(dialog.getResult());
-                UserLogic logic=new UserLogic(new SQLCommands(new SQLiteConnector()));
-                logic.updateMoney(loggedUser.getName(), amount);
+                SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
+                logic.updateMoney(user.getName(), amount);
             }
         });
         return addMoneyButton;
     }
     private Button createShopButton()
     {
-        Button shopButton = createButton("Zrób zakupy",550,250);
+        Button shopButton = InterfaceItems.createButton("Zrób zakupy",550,250,"interfaceButton");
         Scene scene=new Scene(shoppingController.createScenePane(),800,600);
         shopButton.setOnAction(event -> {
-            AdminLogic logic=new AdminLogic(new SQLCommands(new SQLiteConnector()));
+            SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
             shoppingController.setStorageItems(logic.getItems());
             shoppingController.createView();
             mainStage.setScene(scene);
@@ -60,6 +56,7 @@ public class ClientController extends LoggedWindow  {
     }
 
     public void setUserForContorller(User user) {
+        this.user=user;
         shoppingController.setLoggedUser(user);
     }
 }

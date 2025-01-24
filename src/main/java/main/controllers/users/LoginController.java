@@ -11,11 +11,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import main.bussinessLogic.UserLogic;
+import main.bussinessLogic.SQLFacade;
 import main.controllers.admin.AdminController;
 import main.controllers.client.ClientController;
 import main.controllers.employee.EmployeeController;
-import main.controllers.templates.RegisterItems;
+import main.controllers.templates.InterfaceItems;
 import main.database.SQLCommands;
 import main.database.SQLiteConnector;
 import main.models.User;
@@ -23,7 +23,7 @@ import main.models.User;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class LoginController extends RegisterItems implements Initializable {
+public class LoginController implements Initializable {
     @FXML
     public Pane mainPane;
     private AdminController adminController;
@@ -71,11 +71,11 @@ public class LoginController extends RegisterItems implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Text text=createText("Zaloguj się",600,50,100,75,32);
+        Text text= InterfaceItems.createText("Zaloguj się",600,50,100,75,32);
         text.setFill(Paint.valueOf("#006400"));
 
-        HBox usernameBox=createHBox(200,"Podaj nickname:");
-        HBox passBox=createHBox(350,"Podaj hasło:");
+        HBox usernameBox=InterfaceItems.createHBox(200,"Podaj nickname:");
+        HBox passBox=InterfaceItems.createHBox(350,"Podaj hasło:");
 
         TextField usernameField=new TextField();
         TextField passField=new PasswordField();
@@ -86,14 +86,11 @@ public class LoginController extends RegisterItems implements Initializable {
         usernameBox.getChildren().add(usernameField);
         passBox.getChildren().add(passField);
 
-        Button loginButton=new Button("Zaloguj");
-        loginButton.getStyleClass().add("interfaceButton");
-        loginButton.setLayoutY(500);
-        loginButton.setLayoutX(300);
-        Text message=createText("",300,30,250,450,16);
+        Button loginButton=InterfaceItems.createButton("Zaloguj",300,500,"interfaceButton");
+        Text message=InterfaceItems.createText("",300,30,250,450,16);
 
         loginButton.setOnAction(e->{
-            UserLogic logic=new UserLogic(new SQLCommands(new SQLiteConnector()));
+            SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
             User user=logic.getAccount(usernameField.getText(),passField.getText());
             if(user==null){
                 message.setText("Błędne dane");

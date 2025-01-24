@@ -11,8 +11,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import main.bussinessLogic.UserLogic;
-import main.controllers.templates.RegisterItems;
+import main.bussinessLogic.SQLFacade;
+import main.controllers.templates.InterfaceItems;
 import main.database.SQLCommands;
 import main.database.SQLiteConnector;
 
@@ -20,7 +20,7 @@ import main.database.SQLiteConnector;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class RegisterController extends RegisterItems implements Initializable {
+public class InterfaceController implements Initializable {
 
     private boolean isNickValid = false;
     private boolean isPasswordValid = false;
@@ -42,15 +42,14 @@ public class RegisterController extends RegisterItems implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Text text=createText("Zarejestruj się",600,50,100,75,32);
-        text.setFill(Paint.valueOf("#006400"));
-        HBox usernameBox=createHBox(150,"Podaj nickname:");
-        HBox passBox=createHBox(250,"Podaj hasło:");
-        HBox appBox=createHBox(350,"Potwierdź hasło:");
+        Text text= InterfaceItems.createText("Zarejestruj się",600,50,100,75,32);
+        HBox usernameBox=InterfaceItems.createHBox(150,"Podaj nickname:");
+        HBox passBox=InterfaceItems.createHBox(250,"Podaj hasło:");
+        HBox appBox=InterfaceItems.createHBox(350,"Potwierdź hasło:");
 
-        Text nickMess=createText("",300,30,250,242,16);
-        Text passMess=createText("",300,30,250,342,16);
-        Text applyMess=createText("",300,30,250,442,16);
+        Text nickMess=InterfaceItems.createText("",300,30,250,242,16);
+        Text passMess=InterfaceItems.createText("",300,30,250,342,16);
+        Text applyMess=InterfaceItems.createText("",300,30,250,442,16);
 
         TextField usernameField=new TextField();
         TextField passField=new PasswordField();
@@ -64,18 +63,14 @@ public class RegisterController extends RegisterItems implements Initializable {
         passBox.getChildren().add(passField);
         appBox.getChildren().add(appField);
 
-        Button registerButton=new Button("Zarejestruj");
-        registerButton.getStyleClass().add("interfaceButton");
-        registerButton.setLayoutY(475);
-        registerButton.setLayoutX(300);
+        Button registerButton=InterfaceItems.createButton("Zarejestruj",300,475,"interfaceButton");
 
         mainPane.getChildren().addAll(text,usernameBox,passBox,appBox,registerButton,applyMess,passMess,nickMess);
 
         registerButton.setDisable(true);
 
         usernameField.textProperty().addListener((observable,oldValue,newValue )-> {
-            if(newValue.isEmpty())
-            {
+            if(newValue.isEmpty()) {
                 nickMess.setText("Pole tekstowe jest puste");
                 usernameField.setStyle("-fx-text-box-border: red;");
                 isNickValid=false;
@@ -86,18 +81,15 @@ public class RegisterController extends RegisterItems implements Initializable {
                 isNickValid=false;
                 registerButton.setDisable(true);
             }
-            else
-            {
+            else {
                 nickMess.setText("Nickname poprawny");
                 usernameField.setStyle("-fx-text-box-border: green;");
                 isNickValid=true;
                 registerButton.setDisable(!isApplyPassValid || !isPasswordValid);
             }
-
         });
         passField.textProperty().addListener((observable,oldValue,newValue )-> {
-            if(newValue.isEmpty())
-            {
+            if(newValue.isEmpty()) {
                 passMess.setText("Pole tekstowe jest puste");
                 passField.setStyle("-fx-text-box-border: red;");
                 isPasswordValid=false;
@@ -108,22 +100,19 @@ public class RegisterController extends RegisterItems implements Initializable {
                 isPasswordValid=false;
                 registerButton.setDisable(true);
             }
-            else if(!newValue.matches(".*[A-Z].*"))
-            {
+            else if(!newValue.matches(".*[A-Z].*")) {
                 passMess.setText("Brak dużej litery");
                 passField.setStyle("-fx-text-box-border: green;");
                 isPasswordValid=false;
                 registerButton.setDisable(true);
             }
-            else if(!newValue.matches(".*\\d.*"))
-            {
+            else if(!newValue.matches(".*\\d.*")) {
                 passMess.setText("Brak cyfry");
                 passField.setStyle("-fx-text-box-border: green;");
                 isPasswordValid=false;
                 registerButton.setDisable(true);
             }
-            else
-            {
+            else {
                 passMess.setText("Hasło poprawny");
                 passField.setStyle("-fx-text-box-border: green;");
                 isPasswordValid=true;
@@ -143,8 +132,7 @@ public class RegisterController extends RegisterItems implements Initializable {
                 isApplyPassValid=false;
                 registerButton.setDisable(true);
             }
-            else
-            {
+            else {
                 applyMess.setText("Hasła są zgodne");
                 appField.setStyle("-fx-text-box-border: green;");
                 isApplyPassValid=true;
@@ -152,7 +140,7 @@ public class RegisterController extends RegisterItems implements Initializable {
             }
         });
         registerButton.setOnAction(event -> {
-            UserLogic logic=new UserLogic(new SQLCommands(new SQLiteConnector()));
+            SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
             logic.addAccount(usernameField.getText(),passField.getText());
             usernameField.clear();
             passField.clear();
@@ -162,13 +150,5 @@ public class RegisterController extends RegisterItems implements Initializable {
             nickMess.setText("");
             mainStage.setScene(mainScene);
         });
-
     }
-
-
-
-
-
-
-
 }

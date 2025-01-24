@@ -1,6 +1,8 @@
 package main.controllers;
 
-import main.bussinessLogic.InitBaseLogic;
+import main.bussinessLogic.SQLFacade;
+import main.controllers.templates.InterfaceItems;
+import main.database.SQLCommands;
 import main.database.SQLiteConnector;
 import main.database.TableGenerator;
 import javafx.fxml.FXML;
@@ -12,7 +14,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import main.models.User;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -30,52 +31,28 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Text text=new Text("Witaj w szablonie aplikacji sklepowej");
-        text.setWrappingWidth(600);
-        text.prefHeight(50);
-        text.setLayoutX(100);
-        text.setLayoutY(125);
-        text.setTextAlignment(TextAlignment.CENTER);
-        text.setFont(new Font("Arial", 32));
-
-
-
-        Button register=createButton(100,250,"Zarejestruj");
-        Button log=createButton(500,250,"Zaloguj");
-        Button init=createButton(300,400,"Zainicjuj bazę");
+        Text text= InterfaceItems.createText("Witaj w szablonie aplikacji sklepowej",600,50,100,125,32);
+        Button register=InterfaceItems.createButton("Zarejestruj",100,250,"interfaceButton");
+        Button log=InterfaceItems.createButton("Zaloguj",500,250,"interfaceButton");
+        Button init=InterfaceItems.createButton("Zainicjuj bazę",300,400,"interfaceButton");
         init.setOnAction(event -> {
-            InitBaseLogic logic=new InitBaseLogic(new TableGenerator(new SQLiteConnector()));
-            logic.getTableGenerator().generateUserTable();
-            logic.getTableGenerator().createCardTable();
-            logic.getTableGenerator().createProductTable();
-            logic.getTableGenerator().createOrderTable();
+            SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
+            logic.generateTables();
         });
         register.setOnAction(event -> {
             mainStage.setScene(registerScene);
         });
         log.setOnAction(event -> {mainStage.setScene(loginScene);});
         mainPane.getChildren().addAll(text,register,log,init);
-
-    }
-    private Button createButton(double width, double height, String text) {
-        Button button = new Button(text);
-        button.setLayoutX(width);
-        button.setLayoutY(height);
-        button.getStyleClass().add("interfaceButton");
-        return button;
-
     }
 
     public void setMainStage(Stage mainStage) {
         this.mainStage = mainStage;
     }
-
     public void setRegisterScene(Scene registerScene) {
         this.registerScene = registerScene;
     }
-
     public void setLoginScene(Scene loginScene) {
         this.loginScene = loginScene;
     }
-
 }

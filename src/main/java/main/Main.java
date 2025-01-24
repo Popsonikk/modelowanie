@@ -9,7 +9,7 @@ import main.controllers.admin.AdminController;
 import main.controllers.client.ClientController;
 import main.controllers.employee.EmployeeController;
 import main.controllers.users.LoginController;
-import main.controllers.users.RegisterController;
+import main.controllers.users.InterfaceController;
 
 import java.io.IOException;
 
@@ -31,7 +31,7 @@ public class Main extends Application {
         Scene clientScene= new Scene(clientLoader.load(), 800, 600);
 
         MainController mainController = fxmlLoader.getController();
-        RegisterController registerController = registerLoader.getController();
+        InterfaceController registerController = registerLoader.getController();
         LoginController loginController = loginLoader.getController();
         AdminController adminController = adminLoader.getController();
         EmployeeController employeeController = employeeLoader.getController();
@@ -54,19 +54,16 @@ public class Main extends Application {
 
         adminController.setMainScene(mainScene);
         adminController.setMainStage(stage);
-        adminController.setSelfScene(adminScene);
         adminController.setUpControllers(stage,adminScene);
         adminController.startInit();
 
         employeeController.setMainScene(mainScene);
         employeeController.setMainStage(stage);
-        employeeController.setSelfScene(employeeScene);
         employeeController.setUpControllers(stage,employeeScene);
         employeeController.startInit();
 
         clientController.setMainScene(mainScene);
         clientController.setMainStage(stage);
-        clientController.setSelfScene(clientScene);
         clientController.setUpControllers(stage,clientScene);
         clientController.startInit();
 
