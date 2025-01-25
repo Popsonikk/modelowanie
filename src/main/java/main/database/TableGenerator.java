@@ -67,4 +67,15 @@ public class TableGenerator {
             throw new RuntimeException(e);
         }
     }
+    public void deleteCards(int i)
+    {
+        String sql = "DELETE FROM cards WHERE id <8 ";
+        try(Connection conn= connector.connect();
+        Statement statement=conn.createStatement()) {
+            statement.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

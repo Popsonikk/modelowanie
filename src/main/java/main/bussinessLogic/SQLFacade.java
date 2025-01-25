@@ -88,5 +88,11 @@ public class SQLFacade {
         int cardID=commands.findCard(name);
         return commands.getPoints(cardID);
     }
+    public void deleteCards(int i)
+    {
+        TableGenerator generator=new TableGenerator(new SQLiteConnector());
+        generator.deleteCards(i);
+    }
+
 
 }

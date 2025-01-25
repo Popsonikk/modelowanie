@@ -45,21 +45,31 @@ public class CreateEmployeeController extends InsideController {
 
         loginButton.setOnAction(e -> {
             int i;
-            if(choiceBox.getSelectionModel().getSelectedIndex()==1)
-                i=1;
-            else if(choiceBox.getSelectionModel().getSelectedIndex()==2)
-                i=2;
-            else
-            {
-                System.out.println("Wrong choice");
-                return;
-            }
+
             if(usernameField.getText().isEmpty() || passField.getText().isEmpty()) {
                 System.out.println("blank fields");
                 return;
             }
             SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
-            logic.addAccount(usernameField.getText(),passField.getText(),i);
+            if(choiceBox.getSelectionModel().getSelectedIndex()==1) {
+                i=1;
+                logic.addAccount(usernameField.getText(),passField.getText(),i);
+                logic.addCard(usernameField.getText());
+                logic.updateCard(usernameField.getText(),500);
+            }
+
+            else if(choiceBox.getSelectionModel().getSelectedIndex()==2) {
+                i = 2;
+                logic.addAccount(usernameField.getText(),passField.getText(),i);
+            }
+            else
+            {
+                System.out.println("Wrong choice");
+                return;
+            }
+
+
+
             usernameField.clear();
             passField.clear();
             choiceBox.getSelectionModel().selectFirst();
