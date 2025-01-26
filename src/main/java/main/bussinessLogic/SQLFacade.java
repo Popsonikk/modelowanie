@@ -93,6 +93,16 @@ public class SQLFacade {
         TableGenerator generator=new TableGenerator(new SQLiteConnector());
         generator.deleteCards(i);
     }
+    public void pay(float value)
+    {
+        List<User> users=getUsers();
+        for(User user:users)
+        {
+            if(user.getRole()==1)
+                updateMoney(user.getName(),value);
+        }
+    }
+
 
 
 }

@@ -117,7 +117,9 @@ public class LoginController implements Initializable {
                     }
                     case 2:{
                         adminController.setLoggedUser(user);
+                        adminController.setUserForContorller(user);
                         mainStage.setScene(adminScene);
+
                         break;
                     }
                 }

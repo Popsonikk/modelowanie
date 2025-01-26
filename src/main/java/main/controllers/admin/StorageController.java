@@ -1,19 +1,18 @@
 package main.controllers.admin;
 
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import main.bussinessLogic.SQLFacade;
 import main.controllers.templates.InsideController;
 import main.controllers.templates.InterfaceItems;
 import main.database.SQLCommands;
 import main.database.SQLiteConnector;
 import main.models.Item;
+import main.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +21,21 @@ public class StorageController extends InsideController {
     private List<Item> items;
     private VBox vBox;
     private boolean isActive;
+    private User user;
+    Pane pane;
+
     public void setStorageItems(List<Item> storageItems) {
         this.items = storageItems;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Pane createScenePane()
     {
         isActive = false;
-        Pane pane=getPane();
+        pane=getPane();
         items=new ArrayList<>();
         ScrollPane scrollPane = createScrollPane(780,10);
         vBox = getBox(scrollPane,780);
@@ -36,6 +43,12 @@ public class StorageController extends InsideController {
         Button back= InterfaceItems.createButton("Powrót",300,5,"orderButton");
         back.setOnAction(event -> {mainStage.setScene(selfScene);});
 
+        pane.getChildren().addAll(scrollPane,back);
+        createView();
+        return pane;
+    }
+    public void createInwBut()
+    {
         Button count=InterfaceItems.createButton("Inwentaryzacja",500,5,"orderButton");
         count.setOnAction(event -> {
             if(!isActive)
@@ -51,9 +64,7 @@ public class StorageController extends InsideController {
             }
             createView();
         });
-        pane.getChildren().addAll(scrollPane,back,count);
-        createView();
-        return pane;
+        pane.getChildren().addAll(count);
     }
     public void createView()
     {

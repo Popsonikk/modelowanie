@@ -33,7 +33,7 @@ public class ClientController extends UserTemplateController {
     }
     private Button createShopButton()
     {
-        Button shopButton = InterfaceItems.createButton("Zrób zakupy",550,250,"interfaceButton");
+        Button shopButton = InterfaceItems.createButton("Zrób zakupy",550,50,"interfaceButton");
         Scene scene=new Scene(shoppingController.createScenePane(),800,600);
         shopButton.setOnAction(event -> {
             SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
@@ -61,4 +61,5 @@ public class ClientController extends UserTemplateController {
         this.user=user;
         shoppingController.setLoggedUser(user);
     }
+
 }

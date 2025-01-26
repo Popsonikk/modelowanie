@@ -2,9 +2,9 @@ package main.controllers.employee;
 
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextInputDialog;
 import javafx.stage.Stage;
 import main.bussinessLogic.SQLFacade;
+import main.controllers.admin.StorageController;
 import main.controllers.client.ShoppingController;
 import main.controllers.templates.InterfaceItems;
 import main.controllers.templates.UserTemplateController;
@@ -15,7 +15,8 @@ import main.models.User;
 public class EmployeeController extends UserTemplateController {
     private CardController cardController;
     private ShoppingController shoppingController;
-    private User user;
+    private StorageController adminStorageController;
+
 
 
     @Override
@@ -26,12 +27,15 @@ public class EmployeeController extends UserTemplateController {
         shoppingController = new ShoppingController();
         shoppingController.setMainStage(stage);
         shoppingController.setSelfScene(scene);
+        adminStorageController = new StorageController();
+        adminStorageController.setMainStage(stage);
+        adminStorageController.setSelfScene(scene);
     }
 
     @Override
     public void startInit() {
         init();
-        mainPane.getChildren().addAll(createAddCardButton(),createShopButton(),createAddMoneyButton());
+        mainPane.getChildren().addAll(createAddCardButton(),createShopButton(),createStorageButton());
     }
     private Button createAddCardButton()
     {
@@ -59,23 +63,20 @@ public class EmployeeController extends UserTemplateController {
         return shopButton;
     }
     public void setUserForContorller(User user) {
-        this.user=user;
         shoppingController.setLoggedUser(user);
+        adminStorageController.setUser(user);
     }
-    private Button createAddMoneyButton() {
-        Button addMoneyButton = InterfaceItems.createButton("Zasil konto",550,250,"interfaceButton");
-        addMoneyButton.setOnAction(e -> {
-            TextInputDialog dialog = new TextInputDialog();
-            dialog.setTitle("Zasil konto");
-            dialog.showAndWait();
-            if(dialog.getResult() != null){
-                float amount = Float.parseFloat(dialog.getResult());
-                user.updateCash(amount);
-                shoppingController.setLoggedUser(user);
-                SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
-                logic.updateMoney(user.getName(), amount);
-            }
+    private Button createStorageButton()
+    {
+        Button orderButton = InterfaceItems.createButton("Zobacz magazyn",300,250,"interfaceButton");
+        Scene scene=new Scene(adminStorageController.createScenePane(),800,600);
+        orderButton.setOnAction(event -> {
+            SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
+            adminStorageController.setStorageItems(logic.getItems());
+            adminStorageController.createView();
+            mainStage.setScene(scene);
         });
-        return addMoneyButton;
+        return orderButton;
     }
+
 }
