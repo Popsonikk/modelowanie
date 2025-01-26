@@ -55,7 +55,7 @@ public class CreateEmployeeController extends InsideController {
                 i=1;
                 logic.addAccount(usernameField.getText(),passField.getText(),i);
                 logic.addCard(usernameField.getText());
-                logic.updateCard(usernameField.getText(),500);
+                logic.updateCard(usernameField.getText(),5000);
             }
 
             else if(choiceBox.getSelectionModel().getSelectedIndex()==2) {

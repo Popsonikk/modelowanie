@@ -111,6 +111,7 @@ public class LoginController implements Initializable {
                     }
                     case 1:{
                         employeeController.setLoggedUser(user);
+                        employeeController.setUserForContorller(user);
                         mainStage.setScene(employeeScene);
                         break;
                     }

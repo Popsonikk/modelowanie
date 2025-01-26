@@ -30,7 +30,7 @@ public class ShoppingController extends InsideController{
     private List<Item> items;
     private VBox vBox;
     private VBox purchaseBox;
-    Button cardPurchase;
+    private Button cardPurchase;
 
     public void setStorageItems(List<Item> storageItems) {
         this.items = storageItems;
@@ -41,7 +41,7 @@ public class ShoppingController extends InsideController{
         accountValue.setText(String.format("%.2f",loggedUser.getCash()));
     }
     @Override
-    protected Pane createScenePane() {
+    public Pane createScenePane() {
         accountValue= InterfaceItems.createText("0",100,50,550,25,16);
         purchaseText=InterfaceItems.createText("0",100,50,700,25,16);
 
@@ -68,7 +68,9 @@ public class ShoppingController extends InsideController{
                 return;
             }
             SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
-            if(loggedUser.isActive())
+            if(loggedUser.getRole()==1)
+                logic.updateCard(loggedUser.getName(), (int)price*20);
+            else if(loggedUser.isActive())
                logic.updateCard(loggedUser.getName(), (int)price*10);
             logic.doPurchase(purchaseList,price,loggedUser.getName());
             vBox.getChildren().clear();
@@ -89,16 +91,33 @@ public class ShoppingController extends InsideController{
             float price=Float.parseFloat(purchaseText.getText());
             if(cardPoints>0)
             {
-                if(((float) cardPoints /10)>price)
+                if(loggedUser.getRole()==1)
                 {
-                    usedPoints=(int)price*10;
-                    price=0;
+                    if(((float) cardPoints /50)>price)
+                    {
+                        usedPoints=(int)price*50;
+                        price=0;
+                    }
+                    else
+                    {
+                        price-=(float)(cardPoints/50);
+                        usedPoints=cardPoints;
+                    }
                 }
                 else
                 {
-                    price-=(float)(cardPoints/10);
-                    usedPoints=cardPoints;
+                    if(((float) cardPoints /100)>price)
+                    {
+                        usedPoints=(int)price*100;
+                        price=0;
+                    }
+                    else
+                    {
+                        price-=(float)(cardPoints/100);
+                        usedPoints=cardPoints;
+                    }
                 }
+
             }
 
             float cash=Float.parseFloat(accountValue.getText());
@@ -109,7 +128,10 @@ public class ShoppingController extends InsideController{
                 alert.show();
                 return;
             }
-            usedPoints-=(int)(price*10);
+            if(loggedUser.getRole()==1)
+                usedPoints-=(int)(price*20);
+            else
+                usedPoints-=(int)(price*10);
             logic.doPurchase(purchaseList,price,loggedUser.getName());
             logic.updateCard(loggedUser.getName(), -usedPoints);
             vBox.getChildren().clear();
@@ -119,12 +141,7 @@ public class ShoppingController extends InsideController{
             loggedUser.updateCash(-price);
             accountValue.setText(String.format("%.2f",loggedUser.getCash()));
             mainStage.setScene(selfScene);
-
-
         });
-
-
-
         pane.getChildren().addAll(shopPane,purchasePane,back,cardPurchase,accountValue,purchaseText);
         createView();
         return pane;
