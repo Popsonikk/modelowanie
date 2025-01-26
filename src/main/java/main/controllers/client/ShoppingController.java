@@ -75,6 +75,11 @@ public class ShoppingController extends InsideController{
             logic.doPurchase(purchaseList,price,loggedUser.getName());
             vBox.getChildren().clear();
             purchaseBox.getChildren().clear();
+            System.out.println("Paragon:");
+            for(Item i:purchaseList)
+            {
+                System.out.println(i.getName()+": "+i.getNumber()+" cena: "+(i.getCash()*i.getNumber()));
+            }
             purchaseList.clear();
             purchaseText.setText("0");
             loggedUser.updateCash(-price);
@@ -136,6 +141,11 @@ public class ShoppingController extends InsideController{
             logic.updateCard(loggedUser.getName(), -usedPoints);
             vBox.getChildren().clear();
             purchaseBox.getChildren().clear();
+            System.out.println("Paragon:");
+            for(Item i:purchaseList)
+            {
+                System.out.println(i.getName()+": "+i.getNumber()+" cena: "+(i.getCash()*i.getNumber()));
+            }
             purchaseList.clear();
             purchaseText.setText("0");
             loggedUser.updateCash(-price);
