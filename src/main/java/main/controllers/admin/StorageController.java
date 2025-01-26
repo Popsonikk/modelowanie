@@ -21,11 +21,13 @@ import java.util.List;
 public class StorageController extends InsideController {
     private List<Item> items;
     private VBox vBox;
+    private boolean isActive;
     public void setStorageItems(List<Item> storageItems) {
         this.items = storageItems;
     }
     public Pane createScenePane()
     {
+        isActive = false;
         Pane pane=getPane();
         items=new ArrayList<>();
         ScrollPane scrollPane = createScrollPane(780,10);
@@ -33,7 +35,23 @@ public class StorageController extends InsideController {
 
         Button back= InterfaceItems.createButton("Powrót",300,5,"orderButton");
         back.setOnAction(event -> {mainStage.setScene(selfScene);});
-        pane.getChildren().addAll(scrollPane,back);
+
+        Button count=InterfaceItems.createButton("Inwentaryzacja",500,5,"orderButton");
+        count.setOnAction(event -> {
+            if(!isActive)
+            {
+                isActive=true;
+                count.setText("Zakończ inwentaryzacje");
+
+            }
+            else
+            {
+                isActive=false;
+                count.setText("Inwentaryzacja");
+            }
+            createView();
+        });
+        pane.getChildren().addAll(scrollPane,back,count);
         createView();
         return pane;
     }
@@ -49,21 +67,26 @@ public class StorageController extends InsideController {
         for (Item i : items)
         {
             HBox box=getCanvasBox();
-            Button editNumber=InterfaceItems.createButton("N",50,30,"editButton");
-            editNumber.setOnAction(event -> {
-                TextInputDialog dialog = new TextInputDialog();
-                dialog.setTitle("Podaj liczbę");
-                dialog.showAndWait();
-                if(dialog.getResult() != null)
-                {
-                    int number = Integer.parseInt(dialog.getResult());
-                    SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
-                    logic.updateItemNumber(i.getName(),number);
-                    i.setNumber(number);
-                    vBox.getChildren().clear();
-                    createView();
-                }
-            });
+            if(isActive)
+            {
+                Button editNumber=InterfaceItems.createButton("N",50,30,"editButton");
+                editNumber.setOnAction(event -> {
+                    TextInputDialog dialog = new TextInputDialog();
+                    dialog.setTitle("Podaj liczbę");
+                    dialog.showAndWait();
+                    if(dialog.getResult() != null)
+                    {
+                        int number = Integer.parseInt(dialog.getResult());
+                        SQLFacade logic=new SQLFacade(new SQLCommands(new SQLiteConnector()));
+                        logic.updateItemNumber(i.getName(),number);
+                        i.setNumber(number);
+                        vBox.getChildren().clear();
+                        createView();
+                    }
+                });
+                box.getChildren().addAll(editNumber);
+            }
+
             Button editPrice=InterfaceItems.createButton("C",50,30,"editButton");
             editPrice.setOnAction(event -> {
                 TextInputDialog dialog = new TextInputDialog();
@@ -81,7 +104,7 @@ public class StorageController extends InsideController {
             });
             box.getChildren().addAll(createColumnCeil(300,i.getName()),
                     createColumnCeil(175,String.valueOf(i.getNumber())),
-                    createColumnCeil(175,String.valueOf(i.getCash())),editNumber,editPrice);
+                    createColumnCeil(175,String.valueOf(i.getCash())),editPrice);
             vBox.getChildren().addAll(box);
         }
     }
