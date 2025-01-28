@@ -18,21 +18,15 @@ import java.util.List;
 
 
 public class OrderController extends InsideController {
-
-
     private List<Item> items;
     private VBox vBox;
-
-
     @Override
     protected Pane createScenePane() {
         Pane pane=getPane();
         ScrollPane scrollPane = createScrollPane(780,10);
         items=new ArrayList<>();
         vBox = getBox(scrollPane,780);
-
         HBox hbox=createBox(10,10,0,50);
-
         TextField item=new TextField();
         item.getStyleClass().add("orderField");
         Button addToOrder= InterfaceItems.createButton("Dodaj",0,0,"orderButton");
@@ -85,17 +79,12 @@ public class OrderController extends InsideController {
     @Override
     public void createView() {
         vBox.getChildren().clear();
-        for(Item i:items)
-        {
+        for(Item i:items) {
             HBox hbox=createShowBox(i);
             vBox.getChildren().add(hbox);
         }
-
-
     }
-
-    protected HBox createShowBox(Item text)
-    {
+    protected HBox createShowBox(Item text) {
         HBox box=getCanvasBox();
         Button b=InterfaceItems.createButton("X",50,30,"deleteButton");
         b.setOnAction(event -> {

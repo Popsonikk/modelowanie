@@ -16,36 +16,27 @@ import main.database.SQLCommands;
 import main.database.SQLiteConnector;
 
 public class CreateEmployeeController extends InsideController {
-
     @Override
     protected Pane createScenePane() {
         Pane pane=getPane();
         Text text= InterfaceItems.createText("Zarejestruj pracownika",600,50,100,75,32);
-
-
         HBox usernameBox=InterfaceItems.createHBox(175,"Podaj nickname:");
         TextField usernameField=new TextField();
         usernameField.getStyleClass().add("registerField");
         usernameBox.getChildren().add(usernameField);
-
         HBox passBox=InterfaceItems.createHBox(275,"Podaj hasło:");
         TextField passField=new PasswordField();
         passField.getStyleClass().add("registerField");
         passBox.getChildren().add(passField);
-
         Button loginButton=InterfaceItems.createButton("Stwórz konto",300,500,"interfaceButton");
-
         ChoiceBox<String> choiceBox=new ChoiceBox<>();
         choiceBox.getItems().addAll("------","Pracownik","Administrator");
         choiceBox.getStyleClass().add("interfaceButton");
         choiceBox.getSelectionModel().selectFirst();
         choiceBox.setLayoutX(300);
         choiceBox.setLayoutY(375);
-
-
         loginButton.setOnAction(e -> {
             int i;
-
             if(usernameField.getText().isEmpty() || passField.getText().isEmpty()) {
                 System.out.println("blank fields");
                 return;
@@ -57,29 +48,22 @@ public class CreateEmployeeController extends InsideController {
                 logic.addCard(usernameField.getText());
                 logic.updateCard(usernameField.getText(),5000);
             }
-
             else if(choiceBox.getSelectionModel().getSelectedIndex()==2) {
                 i = 2;
                 logic.addAccount(usernameField.getText(),passField.getText(),i);
             }
-            else
-            {
+            else {
                 System.out.println("Wrong choice");
                 return;
             }
-
-
-
             usernameField.clear();
             passField.clear();
             choiceBox.getSelectionModel().selectFirst();
             mainStage.setScene(selfScene);
         });
-
         pane.getChildren().addAll(text,usernameBox,passBox,choiceBox,loginButton);
         return pane;
     }
-
     @Override
     public void createView() {
 
